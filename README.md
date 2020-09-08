@@ -1,4 +1,3 @@
 # IT202
-## Andy
+## Andy Kim
 
-My first repository
