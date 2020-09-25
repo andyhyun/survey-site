@@ -28,38 +28,38 @@ if(isset($_POST["login"])) {
         echo "<br>Invalid email<br>";
     }
     if($isValid) {
-        require_once(__DIR__. "/../lib/db.php");
+        require_once("db.php");
         $db = getDB();
-        if(isset($db)) {
-            //here we'll use placeholders to let PDO map and sanitize our data
-            $stmt = $db->prepare("SELECT email, password from Users WHERE email = :email LIMIT 1");
-            //here's the data map for the parameter to data
-            $params = array(":email"=>$email);
-            $r = $stmt->execute($params);
-            //let's just see what's returned
-            echo "db returned: " . var_export($r, true);
-            $e = $stmt->errorInfo();
-            if($e[0] != "00000") {
-                echo "uh oh something went wrong: " . var_export($e, true);
-            }
-            //since it's a select command we must fetch the results
-            //we'll tell pdo to give it to us as an associative array
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($result && isset($result["password"])) {
-                $password_hash_from_db = $result["password"];
-                if(password_verify($password, $password_hash_from_db)) {
-                    echo "<br>Welcome! You're logged in!<br>"; 
-                }
-                else {
-                    echo "<br>Invalid password, get out!<br>"; 
-                }
-            }
-            else {
-                echo "<br>Invalid user<br>";
-            }
-        }
+	    if(isset($db)) {
+		    //here we'll use placeholders to let PDO map and sanitize our data
+		    $stmt = $db->prepare("SELECT email, password from Users WHERE email = :email LIMIT 1");
+		    //here's the data map for the parameter to data
+		    $params = array(":email"=>$email);
+		    $r = $stmt->execute($params);
+		    //let's just see what's returned
+		    echo "db returned: " . var_export($r, true);
+		    $e = $stmt->errorInfo();
+		    if($e[0] != "00000") {
+			    echo "uh oh something went wrong: " . var_export($e, true);
+		    }
+		    //since it's a select command we must fetch the results
+		    //we'll tell pdo to give it to us as an associative array
+		    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+		    if($result && isset($result["password"])) {
+			    $password_hash_from_db = $result["password"];
+			    if(password_verify($password, $password_hash_from_db)) {
+			        echo "<br>Welcome! You're logged in!<br>"; 
+			    }
+			    else {
+			        echo "<br>Invalid password, get out!<br>"; 
+			    }
+		    }
+		    else {
+			    echo "<br>Invalid user<br>";
+		    }
+	    }
     }
-    else 
+    else {
         echo "There was a validation issue"; 
     }
 }
