@@ -28,7 +28,7 @@ if(isset($_POST["login"])) {
         echo "<br>Invalid email<br>";
     }
     if($isValid) {
-        require_once("db.php");
+        require_once(__DIR__. "/../lib/db.php");
         $db = getDB();
 	    if(isset($db)) {
 		    //here we'll use placeholders to let PDO map and sanitize our data
