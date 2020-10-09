@@ -1,0 +1,1 @@
+Remember to have a config.php file in this folder.
