@@ -21,10 +21,11 @@ if (isset($_POST["register"])) {
     $isValid = true;
     //check if passwords match on the server side
     if ($password == $confirm) {
-        echo "Passwords match <br>";
+        // echo "Passwords match <br>";
+        // We don't have to show anything here
     }
     else {
-        echo "Passwords don't match<br>";
+        flash("Passwords don't match");
         $isValid = false;
     }
     if (!isset($email) || !isset($password) || !isset($confirm)) {
@@ -42,23 +43,23 @@ if (isset($_POST["register"])) {
             $params = array(":email" => $email, ":username" => $username, ":password" => $hash);
             $r = $stmt->execute($params);
             //let's just see what's returned
-            echo "db returned: " . var_export($r, true);
+            //echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
             if ($e[0] == "00000") {
-                echo "<br>Welcome! You successfully registered, please login.";
+                flash("You successfully registered, please login");
             }
             else {
                 if ($e[0] == "23000") {//code for duplicate entry
-                    echo "<br>Either username or email is already registered, please try again";
+                    flash("Username or email is taken, please try again");
                 }
                 else {
-                    echo "uh oh something went wrong: " . var_export($e, true);
+                    flash("An error occured, please try again");
                 }
             }
         }
     }
     else {
-        echo "There was a validation issue";
+        flash("There was a validation issue");
     }
 }
 //safety measure to prevent php warnings
@@ -80,3 +81,4 @@ if (!isset($username)) {
     <input type="password" id="p2" name="confirm" required/>
     <input type="submit" name="register" value="Register"/>
 </form>
+<?php require(__DIR__ . "/partials/flash.php"); ?>

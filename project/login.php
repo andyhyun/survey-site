@@ -23,10 +23,10 @@ if (isset($_POST["login"])) {
     $usingEmail = true;
     if (!isset($email) || !isset($username)  || !isset($password)) {
         $isValid = false;
+        flash("Email, username or password is missing");
     }
     if (!strpos($email, "@")) {
         $usingEmail = false;
-        //echo "<br>Invalid email<br>";
     }
     if ($isValid) {
         $db = getDB();
@@ -40,10 +40,11 @@ if (isset($_POST["login"])) {
                 $params = array(":username" => $username);
             }
             $r = $stmt->execute($params);
-            echo "db returned: " . var_export($r, true);
+            // echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
             if ($e[0] != "00000") {
-                echo "uh oh something went wrong: " . var_export($e, true);
+                // echo "uh oh something went wrong: " . var_export($e, true);
+                flash("Something went wrong, please try again");
             }
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result && isset($result["password"])) {
@@ -64,19 +65,21 @@ SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id wher
                         $_SESSION["user"]["roles"] = [];
                     }
                     //on successful login let's serve-side redirect the user to the home page.
+                    flash("Successful login");
                     header("Location: home.php");
                 }
                 else {
-                    echo "<br>Invalid password, get out!<br>";
+                    flash("Invalid password");
                 }
             }
             else {
-                echo "<br>Invalid user<br>";
+                flash("Invalid user");
             }
         }
     }
     else {
-        echo "There was a validation issue";
+        flash("There was a validation issue");
     }
 }
 ?>
+<?php require(__DIR__ . "/partials/flash.php"); ?>
