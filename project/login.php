@@ -1,7 +1,7 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <form method="POST">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required/>
+    <label for="emailorusername">Email or username:</label>
+    <input type="text" id="emailorusername" name="emailorusername" required/>
     <label for="p1">Password:</label>
     <input type="password" id="p1" name="password" required/>
     <input type="submit" name="login" value="Login"/>
@@ -10,27 +10,35 @@
 <?php
 if (isset($_POST["login"])) {
     $email = null;
+    $username = null;
     $password = null;
-    if (isset($_POST["email"])) {
-        $email = $_POST["email"];
+    if (isset($_POST["emailorusername"])) {
+        $email = $_POST["emailorusername"];
+        $username = $_POST["emailorusername"];
     }
     if (isset($_POST["password"])) {
         $password = $_POST["password"];
     }
     $isValid = true;
-    if (!isset($email) || !isset($password)) {
+    $usingEmail = true;
+    if (!isset($email) || !isset($username)  || !isset($password)) {
         $isValid = false;
     }
     if (!strpos($email, "@")) {
-        $isValid = false;
-        echo "<br>Invalid email<br>";
+        $usingEmail = false;
+        //echo "<br>Invalid email<br>";
     }
     if ($isValid) {
         $db = getDB();
         if (isset($db)) {
-            $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email LIMIT 1");
-
-            $params = array(":email" => $email);
+            if($usingEmail) {
+                $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email LIMIT 1");
+                $params = array(":email" => $email);
+            }
+            else {
+                $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE username = :username LIMIT 1");
+                $params = array(":username" => $username);
+            }
             $r = $stmt->execute($params);
             echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
