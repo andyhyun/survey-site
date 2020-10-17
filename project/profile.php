@@ -88,6 +88,9 @@ if (isset($_POST["saved"])) {
                     flash("Error resetting password");
                 }
             }
+            else {
+                flash("Passwords do not match");
+            }
         }
 //fetch/select fresh data in case anything changed
         $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
