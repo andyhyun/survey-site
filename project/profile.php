@@ -14,6 +14,7 @@ $db = getDB();
 if (isset($_POST["saved"])) {
     $isValid = true;
     //check if our email changed
+    $oldEmail = get_email();
     $newEmail = get_email();
     if (get_email() != $_POST["email"]) {
         //TODO we'll need to check if the email is available
@@ -39,6 +40,7 @@ if (isset($_POST["saved"])) {
             $newEmail = $email;
         }
     }
+    $oldUsername = get_username();
     $newUsername = get_username();
     if (get_username() != $_POST["username"]) {
         $username = $_POST["username"];
@@ -64,13 +66,18 @@ if (isset($_POST["saved"])) {
         }
     }
     if ($isValid) {
-        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
-        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
-        if ($r) {
-            flash("Updated profile");
+        if (($oldEmail != $newEmail) || ($oldUsername != $newUsername)) {
+            $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
+            $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
+            if ($r) {
+                flash("Updated profile");
+            }
+            else {
+                flash("Error updating profile");
+            }
         }
         else {
-            flash("Error updating profile");
+            // maybe put a message saying that nothing changed
         }
         //password is optional, so check if it's even set
         //if so, then check if it's a valid reset request
