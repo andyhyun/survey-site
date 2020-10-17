@@ -31,7 +31,7 @@ if (isset($_POST["register"])) {
     // Way of checking if a username is in the form of an email comes from:
     // https://stackoverflow.com/questions/12026842/how-to-validate-an-email-address-in-php
     if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
-        flash("Username cannot be a password");
+        flash("Username cannot be an email");
         $isValid = false;
     }
     if (!isset($email) || !isset($password) || !isset($confirm)) {
