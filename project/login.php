@@ -21,11 +21,11 @@ if (isset($_POST["login"])) {
     }
     $isValid = true;
     $usingEmail = true;
-    if (!isset($email) || !isset($username)  || !isset($password)) {
+    if (!isset($email) || !isset($username) || !isset($password)) {
         $isValid = false;
         flash("Email, username or password is missing");
     }
-    if (!strpos($email, "@")) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // method of email validation comes from https://stackoverflow.com/questions/12026842/how-to-validate-an-email-address-in-php
         $usingEmail = false;
     }
     if ($isValid) {
