@@ -82,7 +82,10 @@ if (isset($_POST["saved"])) {
         //password is optional, so check if it's even set
         //if so, then check if it's a valid reset request
         if (!empty($_POST["password"]) && !empty($_POST["confirm"])) {
-            if ($_POST["password"] == $_POST["confirm"]) {
+            if (empty($_POST["existing"])) {
+                flash("Enter your existing password to reset password");
+            }
+            else if ($_POST["password"] == $_POST["confirm"]) {
                 $password = $_POST["password"];
                 $hash = password_hash($password, PASSWORD_BCRYPT);
                 //this one we'll do separate
@@ -123,6 +126,8 @@ if (isset($_POST["saved"])) {
     <label for="username">Username</label>
     <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
     <!-- DO NOT PRELOAD PASSWORD-->
+    <label for = "epw">Existing Password</label>
+    <input type="password" name="existing"/>
     <label for="pw">Password</label>
     <input type="password" name="password"/>
     <label for="cpw">Confirm Password</label>
