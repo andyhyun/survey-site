@@ -127,11 +127,11 @@ if (isset($_POST["saved"])) {
     <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
     <!-- DO NOT PRELOAD PASSWORD-->
     <label for = "epw">Existing Password</label>
-    <input type="password" name="existing"/>
+    <input type="password" maxlength="60" name="existing"/>
     <label for="pw">Password</label>
-    <input type="password" name="password"/>
+    <input type="password" maxlength="60" name="password"/>
     <label for="cpw">Confirm Password</label>
-    <input type="password" name="confirm"/>
+    <input type="password" maxlength="60" name="confirm"/>
     <input type="submit" name="saved" value="Save Profile"/>
 </form>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
