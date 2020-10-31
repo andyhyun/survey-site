@@ -85,9 +85,9 @@ if (isset($_POST["saved"])) {
             if (empty($_POST["existing"])) {
                 flash("Enter your existing password to reset password");
             }
-            else if ($_POST["password"] == $_POST["confirm"]) {
-                $stmt = $db->prepare("SELECT password from USERS WHERE id = :id LIMIT 1");
-                $stmt->execute([":id" => get_user_id()]);
+            elseif ($_POST["password"] == $_POST["confirm"]) {
+                $stmt = $db->prepare("SELECT password from Users WHERE email = :email LIMIT 1");
+                $stmt->execute([":email" => $newEmail]);
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 if($result && isset($result["password"])) {
                     $password_hash_from_db = $result["password"];
@@ -108,7 +108,7 @@ if (isset($_POST["saved"])) {
                     else {
                         flash("The existing password you entered is incorrect. Please try again.");
                     }
-
+                    unset($result["password"]);
                 }
             }
             else {
