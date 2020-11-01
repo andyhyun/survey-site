@@ -85,17 +85,30 @@ if (isset($_POST["saved"])) {
             if (empty($_POST["existing"])) {
                 flash("Enter your existing password to reset password");
             }
-            else if ($_POST["password"] == $_POST["confirm"]) {
-                $password = $_POST["password"];
-                $hash = password_hash($password, PASSWORD_BCRYPT);
-                //this one we'll do separate
-                $stmt = $db->prepare("UPDATE Users set password = :password where id = :id");
-                $r = $stmt->execute([":id" => get_user_id(), ":password" => $hash]);
-                if ($r) {
-                    flash("Reset password");
-                }
-                else {
-                    flash("Error resetting password");
+            elseif ($_POST["password"] == $_POST["confirm"]) {
+                $stmt = $db->prepare("SELECT password from Users WHERE email = :email LIMIT 1");
+                $stmt->execute([":email" => $newEmail]);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                if($result && isset($result["password"])) {
+                    $password_hash_from_db = $result["password"];
+                    $existing = $_POST["existing"];
+                    if(password_verify($existing, $password_hash_from_db)) {
+                        $password = $_POST["password"];
+                        $hash = password_hash($password, PASSWORD_BCRYPT);
+                        //this one we'll do separate
+                        $stmt = $db->prepare("UPDATE Users set password = :password where id = :id");
+                        $r = $stmt->execute([":id" => get_user_id(), ":password" => $hash]);
+                        if ($r) {
+                            flash("Reset password");
+                        }
+                        else {
+                            flash("Error resetting password");
+                        }
+                    }
+                    else {
+                        flash("The existing password you entered is incorrect. Please try again.");
+                    }
+                    unset($result["password"]);
                 }
             }
             else {
