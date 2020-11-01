@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#canvas {
+    width: 800px;
+    height: 600px;
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+<a href="http://bencentra.com/2017-07-11-basic-html5-canvas-games.html">Based on "Collect the Square" from Ben Centra's collection of HTML5 Canvas Games</a>
+<main>
+<canvas id="canvas" width="800" height="600" tabindex="1"></canvas>
+<script>
+// Collect the Square game, modified from http://bencentra.com/2017-07-11-basic-html5-canvas-games.html
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+
+// Player's score
+var score = 0;
+
+// Properties of the player's square
+var x = 375;
+var y = 275;
+var speed = 6;
+var speedMultiplier = 1.0;
+var sideLength = 50;
+var timeWhenHit = 0;
+var shouldReceiveDamage = true;
+
+// Flags that check which keys are pressed
+var up = false;
+var down = false;
+var left = false;
+var right = false;
+var shift = false;
+
+// Flags that check what mode the game is in
+var collectMode = true;
+var escapeMode = false;
+
+// Properties of the target square
+var targetX = 0;
+var targetY = 0;
+var targetLength = 25;
+var targetSpeed = 3;
+
+// Checks if a is between b and c (exclusive)
+function isWithin(a, b, c) {
+    return (a > b && a < c);
+}
+
+// Countdown timer
+var countdown = 90;
+// ID to track the setTimeout
+var id = null;
+
+// Listens for when keys are being pressed
+canvas.addEventListener('keydown', function(event) {
+    event.preventDefault();
+    console.log(event.key, event.keyCode);
+    if(event.keyCode === 38 || event.keyCode === 87) {
+        up = true;
+    }
+    if(event.keyCode === 40 || event.keyCode === 83) {
+        down = true;
+    }
+    if(event.keyCode === 37 || event.keyCode === 65) {
+        left = true;
+    }
+    if(event.keyCode === 39 || event.keyCode === 68) {
+        right = true;
+    }
+    if(event.keyCode === 16) {
+        shift = true;
+    }
+});
+
+// Listens for when keys are released
+canvas.addEventListener('keyup', function(event) {
+    event.preventDefault();
+    console.log(event.key, event.keyCode);
+    if(event.keyCode === 38 || event.keyCode === 87) {
+        up = false;
+    }
+    if(event.keyCode === 40 || event.keyCode === 83) {
+        down = false;
+    }
+    if(event.keyCode === 37 || event.keyCode === 65) {
+        left = false;
+    }
+    if(event.keyCode === 39 || event.keyCode === 68) {
+        right = false;
+    }
+    if(event.keyCode === 16) {
+        shift = false;
+    }
+});
+
+// Shows the menu
+function menu() {
+    erase();
+    context.fillStyle = '#FFFFFF';
+    context.font = '36px Arial';
+    context.textAlign = 'center';
+    context.fillText('Collect the Square!', canvas.width / 2, canvas.height / 4);
+    context.font = '24px Arial';
+    context.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
+    context.font = '18px Arial';
+    context.fillText('User the Arrow Keys or WASD to Move', canvas.width / 2, (canvas.height / 4) * 3);
+    context.fillText('Hold the Shift Key to Move Faster', canvas.width / 2, ((canvas.height / 4) * 3) + 22);
+    canvas.addEventListener('click', startGame);
+}
+
+// Starts the game
+function startGame() {
+    // Countdown timer is reduced every second
+    id = setInterval(function() {
+        countdown--;
+    }, 1000);
+    canvas.removeEventListener('click', startGame);
+    // The target square starts at a random point
+    moveTarget();
+    draw();
+}
+
+// Shows the game over screen
+function endGame() {
+    clearInterval(id);
+    erase();
+    context.fillStyle = '#FFFFFF';
+    context.font = '24px Arial';
+    context.textAlign = 'center';
+    context.fillText('Final Score: ' + score, canvas.width / 2, canvas.height / 2);
+}
+
+// Moves the target square to a random position
+function moveTarget() {
+    targetX = Math.round(Math.random() * (canvas.width - targetLength));
+    targetY = Math.round(Math.random() * (canvas.height - targetLength));
+}
+
+// Clears the canvas for the collecting stage
+function erase() {
+    context.fillStyle = "#2E2A2A";
+    context.fillRect(0, 0, 800, 600);
+}
+
+// Clears the canvas for the escaping stage
+function turnRed() {
+    context.fillStyle = '#D10000';
+    context.fillRect(0, 0, 800, 600);
+}
+
+// Draws all objects on the screen
+function draw() {
+
+    if((countdown + 10) % 40 == 0) {
+        escapeMode = true;
+        collectMode = false;
+    }
+    if(countdown % 20 == 0) {
+        collectMode = true;
+        escapeMode = false;
+    }
+    
+    if(collectMode) {
+        erase();
+    }
+    if(escapeMode) {
+        turnRed();
+    }
+
+    speedMultiplier = 1.0;
+    if(shift) {
+        speedMultiplier += 0.5;
+    }
+    if(down) {
+        y += (speed * speedMultiplier);
+    }
+    if(up) {
+        y -= (speed * speedMultiplier);
+    }
+    if(right) {
+        x += (speed * speedMultiplier);
+    }
+    if(left) {
+        x -= (speed * speedMultiplier);
+    }
+
+    if(y + sideLength > canvas.height) {
+        y = canvas.height - sideLength;
+    }
+    if(y < 0) {
+        y = 0;
+    }
+    if(x < 0) {
+        x = 0;
+    }
+    if(x + sideLength > canvas.width) {
+        x = canvas.width - sideLength;
+    }
+
+    if(collectMode) {
+        if(isWithin(targetX, x, x + sideLength) || isWithin(targetX + targetLength, x, x + sideLength)) {
+            if(isWithin(targetY, y, y + sideLength) || isWithin(targetY + targetLength, y, y + sideLength)) {
+                moveTarget();
+                score++;
+            }
+        }
+    }
+    if(escapeMode) {
+        if(targetY + targetLength / 2 < y + sideLength / 2) {
+            targetY += targetSpeed;
+        }
+        if(targetY + targetLength / 2 > y + sideLength / 2) {
+            targetY -= targetSpeed;
+        }
+        if(targetX + targetLength / 2 < x + sideLength / 2) {
+            targetX += targetSpeed;
+        }
+        if(targetX + targetLength / 2 > x + sideLength / 2) {
+            targetX -= targetSpeed;
+        }
+        if(targetY + targetLength > canvas.height) {
+            targetY = canvas.height - targetLength;
+        }
+        if(targetY < 0) {
+            targetY = 0;
+        }
+        if(targetX < 0) {
+            targetX = 0;
+        }
+        if(targetX + targetLength > canvas.width) {
+            targetX = canvas.width - targetLength;
+        }
+        if(isWithin(targetX, x, x + sideLength) || isWithin(targetX + targetLength, x, x + sideLength)) {
+            if(isWithin(targetY, y, y + sideLength) || isWithin(targetY + targetLength, y, y + sideLength)) {
+                // score--;
+                if(shouldReceiveDamage) {
+                    shouldReceiveDamage = false;
+                    timeWhenHit = countdown;
+                    score--;
+                }
+                else if(timeWhenHit - countdown >= 2){
+                    shouldReceiveDamage = true;
+                }
+            }
+        }
+    }
+
+    context.fillStyle = '#00FF00';
+    context.fillRect(x, y, sideLength, sideLength);
+
+    context.fillStyle = '#FFEE00';
+    context.fillRect(targetX, targetY, targetLength, targetLength);
+
+    context.fillStyle = '#FFFFFF';
+    context.font = '24px Arial';
+    context.textAlign = 'left';
+    context.fillText('Score: ' + score, 10, 24);
+    context.fillText('Time Remaining: ' + countdown, 10, 50);
+
+    if(escapeMode) {
+        context.textAlign = 'right';
+        context.fillText('ESCAPE THE YELLOW SQUARE!', 790, 24);
+    }
+
+    if(countdown <= 0) {
+        endGame();
+    } else {
+        window.requestAnimationFrame(draw);
+    }
+}
+
+menu();
+canvas.focus();
+</script>
+</main>
+</body>
+</html>
