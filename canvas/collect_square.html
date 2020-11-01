@@ -40,7 +40,7 @@ var shift = false;
 
 // Flags that check what mode the game is in
 var collectMode = true;
-var escapeMode = false;
+var avoidMode = false;
 
 // Properties of the target square
 var targetX = 0;
@@ -159,18 +159,18 @@ function turnRed() {
 function draw() {
 
     if((countdown + 10) % 40 == 0) {
-        escapeMode = true;
+        avoidMode = true;
         collectMode = false;
     }
     if(countdown % 20 == 0) {
         collectMode = true;
-        escapeMode = false;
+        avoidMode = false;
     }
     
     if(collectMode) {
         erase();
     }
-    if(escapeMode) {
+    if(avoidMode) {
         turnRed();
     }
 
@@ -212,7 +212,7 @@ function draw() {
             }
         }
     }
-    if(escapeMode) {
+    if(avoidMode) {
         if(targetY + targetLength / 2 < y + sideLength / 2) {
             targetY += targetSpeed;
         }
@@ -264,9 +264,9 @@ function draw() {
     context.fillText('Score: ' + score, 10, 24);
     context.fillText('Time Remaining: ' + countdown, 10, 50);
 
-    if(escapeMode) {
+    if(avoidMode) {
         context.textAlign = 'right';
-        context.fillText('ESCAPE THE YELLOW SQUARE!', 790, 24);
+        context.fillText('AVOID THE YELLOW SQUARE!', 790, 24);
     }
 
     if(countdown <= 0) {
