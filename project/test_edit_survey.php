@@ -27,10 +27,11 @@ if(isset($_POST["save"])) {
         $r = $stmt->execute([
             ":title"=>$title,
             ":description"=>$description,
-            ":visibility"=>$visibility
+            ":visibility"=>$visibility,
+            ":id"=>$id
         ]);
         if($r) {
-            flash("Updated successfullt with id: " . $id);
+            flash("Updated successfully with id: " . $id);
         }
         else {
             $e = $stmt->errorInfo();
