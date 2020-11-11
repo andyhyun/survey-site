@@ -30,12 +30,11 @@ if (isset($id)) {
 <?php if (isset($result) && !empty($result)): ?>
     <div class="card">
         <div class="card-title">
-            <?php safer_echo($result["name"]); ?>
+            <?php safer_echo($result["question"]); ?>
         </div>
         <div class="card-body">
             <div>
                 <p>Question Information</p>
-                <div>Question: <?php safer_echo($result["question"]); ?></div>
                 <div>Survey: <?php safer_echo($result["survey"]); ?></div>
             </div>
         </div>
