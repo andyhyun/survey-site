@@ -35,7 +35,7 @@ if (isset($id)) {
             <div>
                 <p>Survey Information</p>
                 <div>Description: <?php safer_echo($result["description"]); ?></div>
-                <div>Visibilty: <?php get_visibility($result["visibility"]); ?></div>
+                <div>Visibility: <?php get_visibility($result["visibility"]); ?></div>
                 <div>Created: <?php safer_echo($result["created"]); ?></div>
                 <div>Last Modified: <?php safer_echo($result["modified"]); ?></div>
                 <div>Owned by: <?php safer_echo($result["username"]); ?></div>
