@@ -1,9 +1,9 @@
-<?php require_once(__DIR__ . "/partials/nav.php"); ?>
+<?php require_once(__DIR__ . "/../partials/nav.php"); ?>
 <?php
 if(!has_role("Admin")) {
     // Will redirect the user to login if they are not an admin, and the rest of the script is killed
     flash("You don't have permission to access this page");
-    die(header("Location: login.php"));
+    die(header("Location: ../login.php"));
 }
 ?>
 
@@ -70,4 +70,4 @@ if(isset($id)) {
     <input type="submit" name="save" value="Update"/>
 </form>
 
-<?php require(__DIR__ . "/partials/flash.php"); ?>
+<?php require(__DIR__ . "/../partials/flash.php"); ?>
