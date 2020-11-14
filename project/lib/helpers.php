@@ -86,4 +86,11 @@ function get_visibility($n) {
             break;
     }
 }
+
+function get_url($path) {
+    if (substr($path, 0, 1) == "/") {
+        return $path;
+    }
+    return $_SERVER["CONTEXT_PREFIX"] . "/IT202/project/$path";
+}
 ?>
