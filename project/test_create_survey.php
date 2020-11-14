@@ -9,7 +9,7 @@ if(!has_role("Admin")) {
 
 <form method="POST">
     <label>Title</label>
-    <input name="title" maxlength="30"/>
+    <input name="title" required maxlength="30"/>
     <label>Description</label>
     <input name="description"/>
     <label>Visibility</label>
