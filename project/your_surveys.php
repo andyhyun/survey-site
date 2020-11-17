@@ -1,4 +1,4 @@
-<?php require_once(__DIR__ . "/../partials/nav.php"); ?>
+<?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
 if(!is_logged_in()) {
     flash("You must be logged in to access this page");
@@ -9,8 +9,8 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT id, title, description, visibility FROM Survey WHERE id = 1");
-$r = $stmt->execute();
+$stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE user_id = :uid LIMIT 10");
+$r = $stmt->execute([":uid" => $user_id]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -25,12 +25,10 @@ else {
             <?php foreach ($results as $r): ?>
                 <div class="list-group-item">
                     <div>
-                        <div>Title:</div>
-                        <div><?php safer_echo($r["title"]); ?></div>
+                        <div>Title: <?php safer_echo($r["title"]); ?></div>
                     </div>
                     <div>
-                        <div>Description:</div>
-                        <div>
+                        <div>Description:
                         <?php
                         if(strlen($r["description"]) > 30) {
                             safer_echo(substr($r["description"], 0, 30) . "...");
@@ -42,12 +40,11 @@ else {
                         </div>
                     </div>
                     <div>
-                        <div>Visibility:</div>
-                        <div><?php get_visibility($r["visibility"]); ?></div>
+                        <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
                     </div>
                     <div>
-                        <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                        <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View</a>
+                        <a type="button" class="btn btn-primary" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
+                        <a type="button" class="btn btn-primary" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -56,4 +53,4 @@ else {
         <p>No results</p>
     <?php endif; ?>
 </div>
-<?php require(__DIR__ . "/../partials/flash.php"); ?>
+<?php require(__DIR__ . "/partials/flash.php"); ?>
