@@ -13,8 +13,8 @@ if(isset($_POST["title_query"])) {
 }
 if (isset($_POST["search"]) && !empty($title_query)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE title LIKE :tq LIMIT 10");
-    $r = $stmt->execute([":tq" => $title_query]);
+    $stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE title LIKE :tq AND visibility = 2 LIMIT 10");
+    $r = $stmt->execute([":tq" => "%$title_query%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
