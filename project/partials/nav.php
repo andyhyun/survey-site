@@ -19,22 +19,24 @@ require_once(__DIR__ . "/../lib/helpers.php");
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <ul class = "navbar-nav mr-auto">
-        <li class="nav-item"><a class="nav-link" href="<?php echo get_url("home.php"); ?>">Home</a></li>
-        <?php if (!is_logged_in()): ?>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("login.php"); ?>">Login</a></li>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("register.php"); ?>">Register</a></li>
-        <?php endif; ?>
-        <?php if(has_role("Admin")): ?>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_create_survey.php"); ?>">Create Survey</a></li>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_list_survey.php"); ?>">View Surveys</a></li>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_create_question.php"); ?>">Create Question</a></li>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_list_questions.php"); ?>">View Questions</a></li>
-        <?php endif; ?>
-        <?php if (is_logged_in()): ?>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("profile.php"); ?>">Profile</a></li>
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("logout.php"); ?>">Logout</a></li>
-        <?php endif; ?>
-    </ul>
-<nav>
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class = "navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("home.php"); ?>">Home</a></li>
+            <?php if (!is_logged_in()): ?>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("login.php"); ?>">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("register.php"); ?>">Register</a></li>
+            <?php endif; ?>
+            <?php if(has_role("Admin")): ?>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_create_survey.php"); ?>">Create Survey</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_list_survey.php"); ?>">View Surveys</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_create_question.php"); ?>">Create Question</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("test/test_list_questions.php"); ?>">View Questions</a></li>
+            <?php endif; ?>
+            <?php if (is_logged_in()): ?>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("profile.php"); ?>">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url("logout.php"); ?>">Logout</a></li>
+            <?php endif; ?>
+        </ul>
+    <nav>
+</div>
