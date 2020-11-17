@@ -28,12 +28,20 @@ require_once(__DIR__ . "/../lib/helpers.php");
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("register.php"); ?>">Register</a></li>
             <?php endif; ?>
             <?php if(has_role("Admin")): ?>
-                <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("test/test_create_survey.php"); ?>">Create Survey</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("test/test_list_survey.php"); ?>">View Surveys</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("test/test_create_question.php"); ?>">Create Question</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("test/test_list_questions.php"); ?>">View Questions</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="nav-link text-light" href="<?php echo get_url("test/test_create_survey.php"); ?>">Create Survey</a>
+                        <a class="nav-link text-light" href="<?php echo get_url("test/test_list_survey.php"); ?>">View Surveys</a>
+                        <a class="nav-link text-light" href="<?php echo get_url("test/test_create_question.php"); ?>">Create Question</a>
+                        <a class="nav-link text-light" href="<?php echo get_url("test/test_list_questions.php"); ?>">View Questions</a>
+                    </div>
+                </li>
             <?php endif; ?>
             <?php if (is_logged_in()): ?>
+                <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("your_surveys.php"); ?>">Your Surveys</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("profile.php"); ?>">Profile</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("logout.php"); ?>">Logout</a></li>
             <?php endif; ?>
