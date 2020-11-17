@@ -133,27 +133,27 @@ if (isset($_POST["saved"])) {
 }
 ?>
 
-<form method="POST">
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input class="form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
-    </div>
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input class="form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
-    </div>
-    <div class="form-group">
-        <label for = "epw">Existing Password</label>
-        <input class="form-control" type="password" maxlength="60" name="existing"/>
-    </div>
-    <div class="form-group">
-        <label for="pw">Password</label>
-        <input class="form-control" type="password" maxlength="60" name="password"/>
-    </div>
-    <div class="form-group">
-        <label for="cpw">Confirm Password</label>
-        <input class="form-control" type="password" maxlength="60" name="confirm"/>
-    </div>
-    <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
-</form>
+    <form method="POST">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input class="form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+        </div>
+        <div class="form-group">
+            <label for = "epw">Existing Password</label>
+            <input class="form-control" type="password" maxlength="60" name="existing"/>
+        </div>
+        <div class="form-group">
+            <label for="pw">Password</label>
+            <input class="form-control" type="password" maxlength="60" name="password"/>
+        </div>
+        <div class="form-group">
+            <label for="cpw">Confirm Password</label>
+            <input class="form-control" type="password" maxlength="60" name="confirm"/>
+        </div>
+        <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
+    </form>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
