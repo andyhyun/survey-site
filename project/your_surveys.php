@@ -29,19 +29,20 @@ else {
                     </div>
                     <div>
                         <div>Description:
-                        <?php
-                        if(strlen($r["description"]) > 30) {
-                            safer_echo(substr($r["description"], 0, 30) . "...");
-                        }
-                        else {
-                            safer_echo($r["description"]);
-                        }
-                        ?>
+                            <?php
+                            if(strlen($r["description"]) > 50) {
+                                safer_echo(substr($r["description"], 0, 50) . "...");
+                            }
+                            else {
+                                safer_echo($r["description"]);
+                            }
+                            ?>
                         </div>
                     </div>
                     <div>
                         <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
                     </div>
+                    <div> </div>
                     <div>
                         <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_edit_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">Edit</a>
                         <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_view_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">View</a>
