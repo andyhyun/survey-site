@@ -9,9 +9,9 @@ if(!is_logged_in()) {
 $title_query = "";
 $results = [];
 if(isset($_POST["title_query"])) {
-    $query = $_POST["title_query"];
+    $title_query = $_POST["title_query"];
 }
-if (isset($_POST["search"]) && !empty($query)) {
+if (isset($_POST["search"]) && !empty($title_query)) {
     $db = getDB();
     $stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE title LIKE :tq and visibility = 2 LIMIT 10");
     $r = $stmt->execute([":tq" => $title_query]);
@@ -24,8 +24,8 @@ if (isset($_POST["search"]) && !empty($query)) {
 }
 ?>
 <form method="POST">
-    <input name="title_query" placeholder="Search" value="<?php safer_echo($title_query); ?>"/>
-    <input type="submit" value="Search" name="search"/>
+    <input class="form-control" name="title_query" placeholder="Search" value="<?php safer_echo($title_query); ?>"/>
+    <input class="btn btn-primary" type="submit" value="Search" name="search"/>
 </form>
 <h3>Public Surveys</h3>
 <div class="results">
