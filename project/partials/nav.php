@@ -22,7 +22,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
 <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <ul class = "navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" href="<?php echo get_url("home.php"); ?>">Home</a></li>
+            <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("home.php"); ?>">Home</a></li>
             <?php if (!is_logged_in()): ?>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("login.php"); ?>">Login</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("register.php"); ?>">Register</a></li>
