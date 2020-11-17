@@ -42,7 +42,6 @@ else {
                     <div>
                         <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
                     </div>
-                    <div> </div>
                     <div>
                         <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_edit_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">Edit</a>
                         <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_view_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">View</a>
