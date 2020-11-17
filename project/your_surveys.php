@@ -9,7 +9,7 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE user_id = 1");
+$stmt = $db->prepare("SELECT id, title, description, visibility FROM Survey WHERE id = 1");
 $r = $stmt->execute();
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
