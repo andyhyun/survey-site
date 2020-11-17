@@ -77,14 +77,22 @@ if (!isset($username)) {
 }
 ?>
 <form method="POST">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required value="<?php safer_echo($email); ?>"/>
-    <label for="user">Username:</label>
-    <input type="text" id="user" name="username" required maxlength="60" value="<?php safer_echo($username); ?>"/>
-    <label for="p1">Password:</label>
-    <input type="password" id="p1" name="password" required maxlength="60"/>
-    <label for="p2">Confirm Password:</label>
-    <input type="password" id="p2" name="confirm" required maxlength="60"/>
-    <input type="submit" name="register" value="Register"/>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input class="form-control" type="email" id="email" name="email" required value="<?php safer_echo($email); ?>"/>
+    </div>
+    <div class="form-group">
+        <label for="user">Username:</label>
+        <input class="form-control" type="text" id="user" name="username" required maxlength="60" value="<?php safer_echo($username); ?>"/>
+    </div>
+    <div class="form-group">
+        <label for="p1">Password:</label>
+        <input class="form-control" type="password" id="p1" name="password" required maxlength="60"/>
+    </div>
+    <div class="form-group">
+        <label for="p2">Confirm Password:</label>
+        <input class="form-control" type="password" id="p2" name="confirm" required maxlength="60"/>
+    </div>
+    <input class="btn btn-primary" type="submit" name="register" value="Register"/>
 </form>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
