@@ -20,7 +20,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
         crossorigin="anonymous"></script>
 
 <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <ul class = "navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link" href="<?php echo get_url("home.php"); ?>">Home</a></li>
             <?php if (!is_logged_in()): ?>
