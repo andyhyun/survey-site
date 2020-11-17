@@ -1,4 +1,5 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
+<div class="container-fluid">
     <form method="POST">
         <div class="form-group">
             <label for="emailorusername">Email or username:</label>
@@ -10,6 +11,7 @@
         </div>
         <input class="btn btn-primary" type="submit" name="login" value="Login"/>
     </form>
+</div>
 <?php
 if (isset($_POST["login"])) {
     $email = null;

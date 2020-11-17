@@ -132,7 +132,7 @@ if (isset($_POST["saved"])) {
     }
 }
 ?>
-
+<div class="container-fluid">
     <form method="POST">
         <div class="form-group">
             <label for="email">Email</label>
@@ -156,4 +156,5 @@ if (isset($_POST["saved"])) {
         </div>
         <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
     </form>
+</div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>

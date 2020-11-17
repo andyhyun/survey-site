@@ -76,6 +76,7 @@ if (!isset($username)) {
     $username = "";
 }
 ?>
+<div class="container-fluid">
     <form method="POST">
         <div class="form-group">
             <label for="email">Email:</label>
@@ -95,4 +96,5 @@ if (!isset($username)) {
         </div>
         <input class="btn btn-primary" type="submit" name="register" value="Register"/>
     </form>
+</div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
