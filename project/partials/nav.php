@@ -29,14 +29,14 @@ require_once(__DIR__ . "/../lib/helpers.php");
             <?php endif; ?>
             <?php if(has_role("Admin")): ?>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="nav-link text-light" href="<?php echo get_url("test/test_create_survey.php"); ?>">Create Survey</a>
-                        <a class="nav-link text-light" href="<?php echo get_url("test/test_list_survey.php"); ?>">View Surveys</a>
-                        <a class="nav-link text-light" href="<?php echo get_url("test/test_create_question.php"); ?>">Create Question</a>
-                        <a class="nav-link text-light" href="<?php echo get_url("test/test_list_questions.php"); ?>">View Questions</a>
+                        <a class="nav-link" href="<?php echo get_url("test/test_create_survey.php"); ?>">Create Survey</a>
+                        <a class="nav-link" href="<?php echo get_url("test/test_list_survey.php"); ?>">View Surveys</a>
+                        <a class="nav-link" href="<?php echo get_url("test/test_create_question.php"); ?>">Create Question</a>
+                        <a class="nav-link" href="<?php echo get_url("test/test_list_questions.php"); ?>">View Questions</a>
                     </div>
                 </li>
             <?php endif; ?>
