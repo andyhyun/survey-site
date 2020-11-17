@@ -25,10 +25,12 @@ else {
             <?php foreach ($results as $r): ?>
                 <div class="list-group-item">
                     <div>
-                        <div>Title: <?php safer_echo($r["title"]); ?></div>
+                        <div>Title:</div>
+                        <div><?php safer_echo($r["title"]); ?></div>
                     </div>
                     <div>
-                        <div>Description: 
+                        <div>Description:</div>
+                        <div>
                         <?php
                         if(strlen($r["description"]) > 30) {
                             safer_echo(substr($r["description"], 0, 30) . "...");
@@ -40,7 +42,8 @@ else {
                         </div>
                     </div>
                     <div>
-                        <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
+                        <div>Visibility:</div>
+                        <div><?php get_visibility($r["visibility"]); ?></div>
                     </div>
                     <div>
                         <a type="button" class="btn btn-primary" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
