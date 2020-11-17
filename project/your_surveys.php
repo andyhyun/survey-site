@@ -43,7 +43,7 @@ else {
                         <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
                     </div>
                     <div>
-                        <div>Owner ID: <?php get_visibility($r["user_id"]); ?></div>
+                        <div>Owner ID: <?php safer_echo($r["user_id"]); ?></div>
                     </div>
                     <div>
                         <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_edit_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">Edit</a>
