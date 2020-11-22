@@ -84,7 +84,7 @@ if (isset($_POST["submit"])) {
     }
 
     if_min_check_false:
-    if(!min_check) {
+    if(!$min_check) {
         flash($min_check_message);
     }
 
