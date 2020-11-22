@@ -57,7 +57,6 @@ if (isset($_POST["submit"])) {
                 }
                 array_push($questions, [
                     "question" => $question,
-                    "visibility" => $visibility,
                     "answers" => $answers
                 ]);
             }
@@ -75,10 +74,11 @@ if (isset($_POST["submit"])) {
             "title" => $title,
             "description" => $description,
             "category" => $category,
+            "visibility" => $visibility,
             "questions" => $questions //contains answers
         ];
         save_survey($survey);
-        
+        echo "<pre>" . var_export($survey, true) . "</pre>";
     }
     else {
         flash("A survey title must be provided");
@@ -102,7 +102,7 @@ function save_survey($survey) {
         ":title" => $survey["title"],
         ":description" => $survey["description"],
         ":category" => $survey["category"],
-        ":visibility" => $survey["max_attempts"],
+        ":visibility" => $survey["visibility"],
         ":user_id" => get_user_id()
     ]);
     if ($r) {//insert questions
