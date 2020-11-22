@@ -6,5 +6,5 @@ CREATE TABLE Questions
     modified    TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     survey_id   int,
     primary key (id),
-    FOREIGN KEY (survey_id) REFERENCES Survey (id) ON DELETE SET NULL
+    FOREIGN KEY (survey_id) REFERENCES Surveys (id) ON DELETE SET NULL
 )
