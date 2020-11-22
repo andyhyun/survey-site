@@ -8,7 +8,6 @@ if (!is_logged_in()) {
 ?>
 <?php
 if (isset($_POST["submit"])) {
-    echo "<pre>" . var_export($_POST, true) . "</pre>";
     //TODO this isn't going to be the best way to parse the form, and probably not the best form setup
     //so just use this as an example rather than what you should do.
     //this is based off of naming conversions used in Python WTForms (I like to try to see if I can get some
@@ -78,7 +77,6 @@ if (isset($_POST["submit"])) {
             "questions" => $questions //contains answers
         ];
         save_survey($survey);
-        echo "<pre>" . var_export($survey, true) . "</pre>";
     }
     else {
         flash("A survey title must be provided");
