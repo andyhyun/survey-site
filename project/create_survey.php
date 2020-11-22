@@ -171,7 +171,7 @@ function save_survey($survey) {
             <input class="form-control" type="text" id="category" name="category" maxlength="15"/>
         </div>
         <div class="form-group">
-            <label for="visibility">Description</label>
+            <label for="visibility">Visibility</label>
             <select class="form-control" name="visibility" id="visibility" required>
                 <option value="0">Draft</option>
                 <option value="1">Private</option>
