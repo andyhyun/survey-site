@@ -8,7 +8,8 @@ if (!is_logged_in()) {
 ?>
 <?php
 if (isset($_POST["submit"])) {
-    //echo "<pre>" . var_export($_POST, true) . "</pre>";
+    echo "<pre>" . var_export($_POST, true) . "</pre>";
+    echo $_POST;
     //TODO this isn't going to be the best way to parse the form, and probably not the best form setup
     //so just use this as an example rather than what you should do.
     //this is based off of naming conversions used in Python WTForms (I like to try to see if I can get some
