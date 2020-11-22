@@ -232,7 +232,7 @@ function save_survey($survey) {
                     let $input = $(item).find(":input");
                     if (typeof ($input) !== 'undefined' && $input != null) {
                         $input.attr("id", updatedRef);
-                        $input.attr("title", updatedRef);
+                        $input.attr("name", updatedRef);
                     }
                 }
             });
@@ -269,7 +269,7 @@ function save_survey($survey) {
                             let $input = $(item).find(":input");
                             if (typeof ($input) !== 'undefined' && $input != null) {
                                 $input.attr("id", updatedRef);
-                                $input.attr("title", updatedRef);
+                                $input.attr("name", updatedRef);
                             }
                         }
                     });
