@@ -183,14 +183,14 @@ function save_survey($survey) {
             <div class="list-group-item">
                 <div class="form-group">
                     <label for="question_0">Question</label>
-                    <input class="form-control" type="text" id="question_0" name="question_0" required/>
+                    <input class="form-control" type="text" id="question_0" name="question_0" required maxlength="100"/>
                 </div>
                 <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
                 <div class="list-group" cop>
                     <div class="list-group-item">
                         <div class="form-group" ied>
                             <label for="question_0_answer_0">Answer</label>
-                            <input class="form-control" type="text" id="question_0_answer_0" name="question_0_answer_0" required/>
+                            <input class="form-control" type="text" id="question_0_answer_0" name="question_0_answer_0" required maxlength="100"/>
                         </div>
                         <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
                     </div>
