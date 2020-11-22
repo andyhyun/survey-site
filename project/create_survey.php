@@ -46,6 +46,7 @@ if (isset($_POST["submit"])) {
                     }
                     else {
                         if($i < 2) {
+                            echo $i;
                             $min_check = false;
                             $min_check_message = "Each question must have at least two answer choices";
                             goto if_min_check_false;
