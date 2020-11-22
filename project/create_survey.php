@@ -9,7 +9,6 @@ if (!is_logged_in()) {
 <?php
 if (isset($_POST["submit"])) {
     echo "<pre>" . var_export($_POST, true) . "</pre>";
-    echo $_POST;
     //TODO this isn't going to be the best way to parse the form, and probably not the best form setup
     //so just use this as an example rather than what you should do.
     //this is based off of naming conversions used in Python WTForms (I like to try to see if I can get some
@@ -181,27 +180,27 @@ function save_survey($survey) {
             </select>
         </div>
 
-        <div class="list-group" i>
+        <div class="list-group">
             <div class="list-group-item">
                 <div class="form-group">
                     <label for="question_0">Question</label>
                     <input class="form-control" type="text" id="question_0" name="question_0" required maxlength="100"/>
                 </div>
                 <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
-                <div class="list-group" cop>
+                <div class="list-group">
                     <div class="list-group-item">
-                        <div class="form-group" ied>
+                        <div class="form-group">
                             <label for="question_0_answer_0">Answer</label>
                             <input class="form-control" type="text" id="question_0_answer_0" name="question_0_answer_0" required maxlength="100"/>
                         </div>
                         <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);" from>Add Answer</button>
+                <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
             </div>
         </div>
 
-        <button class="btn btn-secondary git" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
+        <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
 
         <div class="form-group">
             <input type="submit" name="submit" class="btn btn-primary" value="Create Survey"/>
