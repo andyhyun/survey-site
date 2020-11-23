@@ -191,9 +191,9 @@ function save_survey($survey) {
                 <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
             </div>
         </div>
-        <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
+        <button class="btn btn-secondary" style="margin-top: 30px;" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
         <div class="form-group">
-            <input type="submit" style="padding-top: 30px;" name="submit" class="btn btn-primary" value="Create Survey"/>
+            <input type="submit" style="margin-top: 30px;" name="submit" class="btn btn-primary" value="Create Survey"/>
         </div>
     </form>
 </div>
