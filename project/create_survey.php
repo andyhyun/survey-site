@@ -8,10 +8,6 @@ if (!is_logged_in()) {
 ?>
 <?php
 if (isset($_POST["submit"])) {
-    //TODO this isn't going to be the best way to parse the form, and probably not the best form setup
-    //so just use this as an example rather than what you should do.
-    //this is based off of naming conversions used in Python WTForms (I like to try to see if I can get some
-    //php equivalents implemented (to a very, very basic degree))
     $min_check = true; // will remain true if a survey has at least one question, and if each question has at least two answers
     $min_check_message = "";
     $title = $_POST["title"];
@@ -20,7 +16,6 @@ if (isset($_POST["submit"])) {
         $description = $_POST["description"];
         $category = $_POST["category"];
         $visibility = $_POST["visibility"];
-        //TODO here's where it gets a tad hacky and there are better ways to do it.
         $index = 0;
         $assumed_max_questions = 100;//this isn't a realistic limit, it's just to ensure
         $questions = [];
@@ -104,13 +99,9 @@ function save_survey($survey) {
     ]);
     if ($r) {//insert questions
         $survey_id = $db->lastInsertId();
-        //we could bulk insert questions, but it'll be a bit complex to get the ids back out
-        //for use in the Answers insert, so instead I'll do a less efficient route and insert a question and its
-        //answers one at a time.
         //loop over each question, insert the question and respective answers
         foreach ($survey["questions"] as $questionIndex => $q) {
             $stmt = $db->prepare("INSERT INTO Questions (question, survey_id) VALUES (:q, :survey_id)");
-            //echo "<pre>" .var_export($q, true) . "</pre>";
             $r = $stmt->execute([":q" => $q["question"], ":survey_id" => $survey_id]);
             if ($r) {//insert answers
                 $question_id = $db->lastInsertId();
@@ -125,9 +116,6 @@ function save_survey($survey) {
                 }
                 //only need to map this once since it's the same for this batch of answers
                 $params[":qid"] = $question_id;
-                //echo "<br>Answer<br>";
-                //echo $query;
-                //echo var_export($params, true);
                 $stmt = $db->prepare($query);
                 $r = $stmt->execute($params);
                 if (!$r) {
@@ -181,9 +169,13 @@ function save_survey($survey) {
             <div class="list-group-item">
                 <div class="form-group">
                     <label for="question_0">Question</label>
-                    <input class="form-control" type="text" id="question_0" name="question_0" required maxlength="100"/>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" id="question_0" name="question_0" required maxlength="100"/>
+                        <div class="input-group-append">
+                            <button class="btn btn-danger" type="button" onclick="event.preventDefault(); deleteMe(this);">X</button>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="form-group">
