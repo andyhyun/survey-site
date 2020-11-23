@@ -176,7 +176,7 @@ function save_survey($survey) {
                     </div>
                 </div>
                 <div class="list-group">
-                    <div class="list-group-item border-0">
+                    <div class="list-group-item" style="border: none;">
                         <div class="form-group">
                             <!--<label for="question_0_answer_0">Answer</label>-->
                             <div class="input-group mb-3">
@@ -188,7 +188,7 @@ function save_survey($survey) {
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
+                <button class="btn btn-secondary" style="margin-left: 20px;" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
             </div>
         </div>
         <button class="btn btn-secondary" style="margin-top: 30px;" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
