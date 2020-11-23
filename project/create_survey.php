@@ -30,7 +30,6 @@ if (isset($_POST["submit"])) {
                 $answers = [];//reset array each loop
                 for ($i = 0; $i < $assumed_max_answers; $i++) {
                     $check = "" . join(["question_", $index, "_answer_", $i]);
-                    // error_log("Checking for pattern $check");
                     $answer = false;
                     if (isset($_POST[$check])) {
                         $answer = $_POST[$check];
@@ -180,21 +179,22 @@ function save_survey($survey) {
                     <div class="list-group-item">
                         <div class="form-group">
                             <label for="question_0_answer_0">Answer</label>
-                            <input class="form-control" type="text" id="question_0_answer_0" name="question_0_answer_0" required maxlength="100"/>
+                            <div class="input-group mb-3">
+                                <input class="form-control" type="text" id="question_0_answer_0" name="question_0_answer_0" required maxlength="100"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn btn-danger" onclick="event.preventDefault(); deleteMe(this);">X</button>
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
             </div>
         </div>
-
         <button class="btn btn-secondary" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
-
         <div class="form-group">
             <input type="submit" name="submit" class="btn btn-primary" value="Create Survey"/>
         </div>
-
     </form>
 </div>
 <script>
