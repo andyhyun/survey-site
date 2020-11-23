@@ -175,8 +175,8 @@ function save_survey($survey) {
                         </div>
                     </div>
                 </div>
-                <div class="list-group border-0">
-                    <div class="list-group-item">
+                <div class="list-group">
+                    <div class="list-group-item border-0">
                         <div class="form-group">
                             <!--<label for="question_0_answer_0">Answer</label>-->
                             <div class="input-group mb-3">
