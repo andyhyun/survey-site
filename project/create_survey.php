@@ -188,7 +188,7 @@ function save_survey($survey) {
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-secondary" style="margin-left: 20px;margin-bottom: 16px;" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
+                <button class="btn btn-secondary" style="margin-left: 20px;" onclick="event.preventDefault(); cloneThis(this);">Add Answer</button>
             </div>
         </div>
         <button class="btn btn-secondary" style="margin-top: 30px;" onclick="event.preventDefault(); cloneThis(this);">Add Question</button>
