@@ -178,7 +178,7 @@ function save_survey($survey) {
                 <div class="list-group">
                     <div class="list-group-item" style="border: none;margin-bottom: -20px;">
                         <div class="form-group">
-                            <!--<label for="question_0_answer_0">Answer</label>-->
+                            <label for="question_0_answer_0">Answer</label>
                             <div class="input-group mb-3">
                                 <input class="form-control" type="text" id="question_0_answer_0" name="question_0_answer_0" placeholder="Enter your answer here" required maxlength="100"/>
                                 <div class="input-group-append">
