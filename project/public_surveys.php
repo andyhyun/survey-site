@@ -55,6 +55,7 @@ else {
             <input class="form-control" name="category_filter" placeholder="Category" value="<?php safer_echo($category_filter); ?>"/>
         </div>
     </div>
+    <input class="btn btn-primary" type="submit" value="Search" name="search"/>
 </form>
 
 <div class="container-fluid">
