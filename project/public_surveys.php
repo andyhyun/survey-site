@@ -28,7 +28,7 @@ if(isset($_POST["search"])) {
 }
 else {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, visibility, username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY created DESC LIMIT 10");
+    $stmt = $db->prepare("SELECT title, description, visibility, username, Surveys.created FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY created DESC LIMIT 10");
     $r = $stmt->execute();
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
