@@ -9,7 +9,7 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT id, title, description, category, visibility FROM Surveys ORDER BY created WHERE user_id = :uid LIMIT 10");
+$stmt = $db->prepare("SELECT id, title, description, category, visibility FROM Surveys WHERE user_id = :uid ORDER BY created DESC LIMIT 10");
 $r = $stmt->execute([":uid" => $user_id]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
