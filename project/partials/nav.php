@@ -19,7 +19,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
 
-<div class="container-fluid" style="width: 100%;white-space: nowrap;">
+<div class="container-fluid" style="padding: 0;">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <ul class = "navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("home.php"); ?>">Home</a></li>
