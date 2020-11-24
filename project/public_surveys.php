@@ -6,15 +6,30 @@ if(!is_logged_in()) {
 }
 ?>
 <?php
-$title_query = "";
+$title_filter = "";
+$category_filter = "";
 $results = [];
-if(isset($_POST["title_query"])) {
-    $title_query = $_POST["title_query"];
+if(isset($_POST["title_filter"])) {
+    $title_query = $_POST["title_filter"];
 }
-if (isset($_POST["search"]) && !empty($title_query)) {
+if(isset($_POST["category_filter"])) {
+    $title_query = $_POST["category_filter"];
+}
+if(isset($_POST["search"])) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE title LIKE :tq AND visibility = 2 LIMIT 10");
-    $r = $stmt->execute([":tq" => "%$title_query%"]);
+    $stmt = $db->prepare("SELECT title, description, visibility, username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY created DESC LIMIT 10");
+    $r = $stmt->execute([":tf" => "%$title_filter%", ":cf" => "%$category_filter%"]);
+    if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else {
+        flash("There was a problem fetching the results");
+    }
+}
+else {
+    $db = getDB();
+    $stmt = $db->prepare("SELECT title, description, visibility, username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY created DESC LIMIT 10");
+    $r = $stmt->execute();
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -23,21 +38,42 @@ if (isset($_POST["search"]) && !empty($title_query)) {
     }
 }
 ?>
+<!--
 <form method="POST">
-    <input class="form-control" name="title_query" placeholder="Search" value="<?php safer_echo($title_query); ?>"/>
+    <input class="form-control" name="title_query" placeholder="Search" value="<?php //safer_echo($title_query); ?>"/>
     <input class="btn btn-primary" type="submit" value="Search" name="search"/>
 </form>
-<h3>Public Surveys</h3>
-<div class="results">
-    <?php if (count($results) > 0): ?>
-        <div class="list-group">
-            <?php foreach ($results as $r): ?>
+-->
+
+<h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
+<form method="POST">
+    <div class="form-group">
+        <div class="col-8">
+            <input class="form-control" name="title_filter" placeholder="Title" value="<?php safer_echo($title_filter); ?>"/>
+        </div>
+        <div class="col-4">
+            <input class="form-control" name="category_filter" placeholder="Category" value="<?php safer_echo($category_filter); ?>"/>
+        </div>
+    </div>
+</form>
+
+<div class="container-fluid">
+    <!--<h3 style="margin-top: 20px;margin-bottom: 20px;">Your Latest Surveys</h3>-->
+    <div class="list-group">
+        <?php if($results && count($results) > 0): ?>
+            <div class="list-group-item" style="background-color: #e8faff;">
+                <div class="row">
+                    <div class="col-3">Title</div>
+                    <div class="col-4">Description</div>
+                    <div class="col-2" align="center">Category</div>
+                    <div class="col-3" align="center">Posted By</div>
+                </div>
+            </div>
+            <?php foreach($results as $r): ?>
                 <div class="list-group-item">
-                    <div>
-                        <div>Title: <?php safer_echo($r["title"]); ?></div>
-                    </div>
-                    <div>
-                        <div>Description:
+                    <div class="row">
+                        <div class="col-3"><?php safer_echo($r["title"]) ?></div>
+                        <div class="col-4">
                             <?php
                             if(strlen($r["description"]) > 50) {
                                 safer_echo(substr($r["description"], 0, 50) . "...");
@@ -47,22 +83,16 @@ if (isset($_POST["search"]) && !empty($title_query)) {
                             }
                             ?>
                         </div>
-                    </div>
-                    <div>
-                        <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
-                    </div>
-                    <div>
-                        <div>Owner ID: <?php safer_echo($r["user_id"]); ?></div>
-                    </div>
-                    <div>
-                        <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_edit_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                        <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_view_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">View</a>
+                        <div class="col-2" align="center"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-3" align="center"><?php get_visibility($r["username"]) ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p>No results</p>
-    <?php endif; ?>
+        <?php else:?>
+            <div class="list-group-item">
+                No results 
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
