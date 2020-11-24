@@ -35,7 +35,6 @@ else {
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col"><?php safer_echo($r["title"]) ?></div>
-                        <div class="col"><?php safer_echo($r["title"]) ?></div>
                         <div class="col">
                             <?php
                             if(strlen($r["description"]) > 50) {
@@ -46,6 +45,7 @@ else {
                             }
                             ?>
                         </div>
+                        <div class="col"><?php safer_echo($r["category"]) ?></div>
                         <div class="col"><?php get_visibility($r["visibility"]) ?></div>
                     </div>
                 </div>
