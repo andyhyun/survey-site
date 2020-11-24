@@ -25,17 +25,17 @@ else {
         <?php if($results && count($results) > 0): ?>
             <div class="list-group-item" style="background-color: #e8faff;">
                 <div class="row">
-                    <div class="col">Title</div>
-                    <div class="col">Description</div>
-                    <div class="col">Category</div>
-                    <div class="col">Visibility</div>
+                    <div class="col-3">Title</div>
+                    <div class="col-5">Description</div>
+                    <div class="col-2">Category</div>
+                    <div class="col-2">Visibility</div>
                 </div>
             </div>
             <?php foreach($results as $r): ?>
                 <div class="list-group-item">
                     <div class="row">
-                        <div class="col"><?php safer_echo($r["title"]) ?></div>
-                        <div class="col">
+                        <div class="col-3"><?php safer_echo($r["title"]) ?></div>
+                        <div class="col-5">
                             <?php
                             if(strlen($r["description"]) > 50) {
                                 safer_echo(substr($r["description"], 0, 50) . "...");
@@ -45,8 +45,8 @@ else {
                             }
                             ?>
                         </div>
-                        <div class="col"><?php safer_echo($r["category"]) ?></div>
-                        <div class="col"><?php get_visibility($r["visibility"]) ?></div>
+                        <div class="col-2"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-2"><?php get_visibility($r["visibility"]) ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>
