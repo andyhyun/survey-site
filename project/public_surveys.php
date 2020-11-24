@@ -45,17 +45,17 @@ else {
 </form>
 -->
 
-<h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
 <form method="POST">
     <div class="form-group">
-        <div class="col-8">
+        <h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
+        <div class="col-6">
             <input class="form-control" name="title_filter" placeholder="Title" value="<?php safer_echo($title_filter); ?>"/>
         </div>
         <div class="col-4">
             <input class="form-control" name="category_filter" placeholder="Category" value="<?php safer_echo($category_filter); ?>"/>
         </div>
+        <input class="btn btn-primary" type="submit" value="Search" name="search"/>
     </div>
-    <input class="btn btn-primary" type="submit" value="Search" name="search"/>
 </form>
 
 <div class="container-fluid">
