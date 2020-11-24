@@ -37,8 +37,8 @@ else {
                         <div class="col-3"><?php safer_echo($r["title"]) ?></div>
                         <div class="col-5">
                             <?php
-                            if(strlen($r["description"]) > 50) {
-                                safer_echo(substr($r["description"], 0, 50) . "...");
+                            if(strlen($r["description"]) > 75) {
+                                safer_echo(substr($r["description"], 0, 75) . "...");
                             }
                             else {
                                 safer_echo($r["description"]);
