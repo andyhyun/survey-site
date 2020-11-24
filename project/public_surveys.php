@@ -13,7 +13,7 @@ if(isset($_POST["title_filter"])) {
     $title_query = $_POST["title_filter"];
 }
 if(isset($_POST["category_filter"])) {
-    $title_query = $_POST["category_filter"];
+    $category_query = $_POST["category_filter"];
 }
 if(isset($_POST["search"])) {
     $db = getDB();
