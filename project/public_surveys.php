@@ -5,29 +5,15 @@ if(!is_logged_in()) {
     die(header("Location: login.php"));
 }
 ?>
-
-<form method="POST">
-    <div class="form-group">
-        <h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
-        <div class="col-6">
-            <input class="form-control" name="title_filter" placeholder="Title"/>
-        </div>
-        <div class="col-4">
-            <input class="form-control" name="category_filter" placeholder="Category"/>
-        </div>
-        <input class="btn btn-primary" type="submit" value="Search" name="search"/>
-    </div>
-</form>
-
 <?php
 $title_filter = "";
 $category_filter = "";
 $results = [];
 if(isset($_POST["title_filter"])) {
-    $title_query = $_POST["title_filter"];
+    $title_filter = $_POST["title_filter"];
 }
 if(isset($_POST["category_filter"])) {
-    $category_query = $_POST["category_filter"];
+    $category_filter = $_POST["category_filter"];
 }
 if(isset($_POST["search"])) {
     $db = getDB();
@@ -52,17 +38,20 @@ else {
     }
 }
 ?>
-<!--
 <form method="POST">
-    <input class="form-control" name="title_query" placeholder="Search" value="<?php //safer_echo($title_query); ?>"/>
-    <input class="btn btn-primary" type="submit" value="Search" name="search"/>
+    <div class="form-group">
+        <h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
+        <div class="col-6">
+            <input class="form-control" name="title_filter" placeholder="Title" value="<?php safer_echo($title_filter); ?>"/>
+        </div>
+        <div class="col-4">
+            <input class="form-control" name="category_filter" placeholder="Category" value="<?php safer_echo($category_filter); ?>"/>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Search" name="search"/>
+    </div>
 </form>
--->
-
-
 
 <div class="container-fluid">
-    <!--<h3 style="margin-top: 20px;margin-bottom: 20px;">Your Latest Surveys</h3>-->
     <div class="list-group">
         <?php if($results && count($results) > 0): ?>
             <div class="list-group-item" style="background-color: #e8faff;">
