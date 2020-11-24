@@ -9,7 +9,7 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT id, title, description, visibility, user_id FROM Survey WHERE user_id = :uid LIMIT 10");
+$stmt = $db->prepare("SELECT id, title, description, category, visibility FROM Surveys WHERE user_id = :uid ORDER BY created DESC LIMIT 10");
 $r = $stmt->execute([":uid" => $user_id]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -18,42 +18,43 @@ else {
     flash("There was a problem fetching the results");
 }
 ?>
-<h3>Your Surveys</h3>
-<div class="results">
-    <?php if (count($results) > 0): ?>
-        <div class="list-group">
-            <?php foreach ($results as $r): ?>
+
+<div class="container-fluid">
+    <h3 style="margin-top: 20px;margin-bottom: 20px;">Your Latest Surveys</h3>
+    <div class="list-group">
+        <?php if($results && count($results) > 0): ?>
+            <div class="list-group-item" style="background-color: #e8faff;">
+                <div class="row">
+                    <div class="col-3">Title</div>
+                    <div class="col-5">Description</div>
+                    <div class="col-2" align="center">Category</div>
+                    <div class="col-2" align="center">Visibility</div>
+                </div>
+            </div>
+            <?php foreach($results as $r): ?>
                 <div class="list-group-item">
-                    <div>
-                        <div>Title: <?php safer_echo($r["title"]); ?></div>
-                    </div>
-                    <div>
-                        <div>Description:
+                    <div class="row">
+                        <div class="col-3"><?php safer_echo($r["title"]) ?></div>
+                        <div class="col-5">
                             <?php
-                            if(strlen($r["description"]) > 50) {
-                                safer_echo(substr($r["description"], 0, 50) . "...");
+                            if(strlen($r["description"]) > 90) {
+                                safer_echo(substr($r["description"], 0, 90) . "...");
                             }
                             else {
                                 safer_echo($r["description"]);
                             }
                             ?>
                         </div>
-                    </div>
-                    <div>
-                        <div>Visibility: <?php get_visibility($r["visibility"]); ?></div>
-                    </div>
-                    <div>
-                        <div>Owner ID: <?php safer_echo($r["user_id"]); ?></div>
-                    </div>
-                    <div>
-                        <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_edit_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                        <a type="button" class="btn btn-primary" href="<?php echo get_url("test/test_view_survey.php"); ?>?id=<?php safer_echo($r['id']); ?>">View</a>
+                        <div class="col-2" align="center"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p>No results</p>
-    <?php endif; ?>
+        <?php else:?>
+            <div class="list-group-item">
+                You don't have any surveys yet!
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
