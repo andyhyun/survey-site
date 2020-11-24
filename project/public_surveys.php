@@ -10,10 +10,10 @@ if(!is_logged_in()) {
     <div class="form-group">
         <h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
         <div class="col-6">
-            <input class="form-control" name="title_filter" placeholder="Title" value="<?php safer_echo($title_filter); ?>"/>
+            <input class="form-control" name="title_filter" placeholder="Title"/>
         </div>
         <div class="col-4">
-            <input class="form-control" name="category_filter" placeholder="Category" value="<?php safer_echo($category_filter); ?>"/>
+            <input class="form-control" name="category_filter" placeholder="Category"/>
         </div>
         <input class="btn btn-primary" type="submit" value="Search" name="search"/>
     </div>
