@@ -85,7 +85,7 @@ else {
                             ?>
                         </div>
                         <div class="col-2" align="center"><?php safer_echo($r["category"]) ?></div>
-                        <div class="col-3" align="center"><?php get_visibility($r["username"]) ?></div>
+                        <div class="col-3" align="center"><?php safer_echo($r["username"]) ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>
