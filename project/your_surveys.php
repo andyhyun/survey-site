@@ -20,10 +20,10 @@ else {
 ?>
 
 <div class="container-fluid">
-    <h3>Your Latest Surveys</h3>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;">Your Latest Surveys</h3>
     <div class="list-group">
         <?php if($results && count($results) > 0): ?>
-            <div class="list-group-item">
+            <div class="list-group-item" style="background-color: #e8faff;">
                 <div class="row">
                     <div class="col">Title</div>
                     <div class="col">Description</div>
