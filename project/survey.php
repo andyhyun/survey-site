@@ -27,40 +27,44 @@ if (isset($id)) {
     $survey_user_id = $result["user_id"];
     $user_id = get_user_id();
     $visibility = get_visibility($result["visibility"]);
-    if($visibility == 0 && $user_id != $survey_user_id) {
+    if($visibility == 0 && ($user_id != $survey_user_id)) {
         flash("You don't have permission to access this page");
         die(header("Location: public_surveys.php"));
     }
 }
 ?>
-<div class="card" style="width: 25rem;">
-    <div class="card-body">
-        <div class="font-weight-bold">Title</div>
-        <div><?php safer_echo($result["title"]); ?></div>
+<?php if (isset($result) && !empty($result)): ?>
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <div class="font-weight-bold">Title</div>
+            <div><?php safer_echo($result["title"]); ?></div>
+        </div>
     </div>
-</div>
-<div class="card" style="width: 25rem;">
-    <div class="card-body">
-        <div class="font-weight-bold">Description</div>
-        <div><?php safer_echo($result["description"]); ?></div>
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <div class="font-weight-bold">Description</div>
+            <div><?php safer_echo($result["description"]); ?></div>
+        </div>
     </div>
-</div>
-<div class="card" style="width: 25rem;">
-    <div class="card-body">
-        <div class="font-weight-bold">Category</div>
-        <div><?php safer_echo($result["category"]); ?></div>
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <div class="font-weight-bold">Category</div>
+            <div><?php safer_echo($result["category"]); ?></div>
+        </div>
     </div>
-</div>
-<div class="card" style="width: 25rem;">
-    <div class="card-body">
-        <div class="font-weight-bold">Visibility</div>
-        <div><?php get_visibility($result["visibility"]); ?></div>
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <div class="font-weight-bold">Visibility</div>
+            <div><?php get_visibility($result["visibility"]); ?></div>
+        </div>
     </div>
-</div>
-<div class="card" style="width: 25rem;">
-    <div class="card-body">
-        <div class="font-weight-bold">Created By</div>
-        <div><?php safer_echo($result["username"]); ?></div>
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <div class="font-weight-bold">Created By</div>
+            <div><?php safer_echo($result["username"]); ?></div>
+        </div>
     </div>
-</div>
+<?php else: ?>
+    <p>The survey ID could not be found</p>
+<?php endif; ?>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
