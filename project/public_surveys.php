@@ -38,16 +38,18 @@ else {
     }
 }
 ?>
-<form method="POST">
-    <h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
-    <div class="form-group">
-        <input class="form-control" name="title_filter" placeholder="Title" maxlength="45" value="<?php safer_echo($title_filter); ?>"/>
-    </div>
-    <div class="form-group">
-        <input class="form-control" name="category_filter" placeholder="Category" maxlength="15" value="<?php safer_echo($category_filter); ?>"/>
-    </div>
-    <input class="btn btn-primary" type="submit" value="Search" name="search"/>
-</form>
+<div class="container-fluid">
+    <form method="POST">
+        <h3 style="margin-top: 20px;margin-bottom: 20px;">Search Surveys</h3>
+        <div class="form-group">
+            <input class="form-control" name="title_filter" placeholder="Title" maxlength="45" value="<?php safer_echo($title_filter); ?>"/>
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="category_filter" placeholder="Category" maxlength="15" value="<?php safer_echo($category_filter); ?>"/>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Search" name="search"/>
+    </form>
+</div>
 
 <div class="container-fluid">
     <div class="list-group">
