@@ -63,5 +63,4 @@ if (isset($id)) {
         <div><?php safer_echo($result["username"]); ?></div>
     </div>
 </div>
-</div>
 <?php require(__DIR__ . "/../partials/flash.php"); ?>
