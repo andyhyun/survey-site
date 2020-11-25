@@ -17,7 +17,7 @@ if (isset($_GET["id"])) {
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, visibility, user_id, username FROM Survey JOIN Users ON Survey.user_id = Users.id WHERE Survey.id = :id");
+    $stmt = $db->prepare("SELECT title, description, category, visibility, user_id, username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE Surveys.id = :id");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
