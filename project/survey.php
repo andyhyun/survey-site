@@ -40,7 +40,7 @@ if (isset($id)) {
     </div>
     <div class="form-group">
         <div>Description</div>
-        <div class="col-4"><?php safer_echo($result["title"]); ?></div>
+        <div><?php safer_echo($result["title"]); ?></div>
     </div>
     <div class="form-group">
         <div>Category</div>
