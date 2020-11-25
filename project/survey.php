@@ -33,33 +33,33 @@ if (isset($id)) {
     }
 }
 ?>
-<div class="card">
+<div class="card" style="width: 25rem;">
     <div class="card-body">
-        <div>Title</div>
+        <div class="font-weight-bold">Title</div>
         <div><?php safer_echo($result["title"]); ?></div>
     </div>
 </div>
-<div class="card">
+<div class="card" style="width: 25rem;">
     <div class="card-body">
-        <div>Description</div>
+        <div class="font-weight-bold">Description</div>
         <div><?php safer_echo($result["description"]); ?></div>
     </div>
 </div>
-<div class="card">
+<div class="card" style="width: 25rem;">
     <div class="card-body">
-        <div>Category</div>
+        <div class="font-weight-bold">Category</div>
         <div><?php safer_echo($result["category"]); ?></div>
     </div>
 </div>
-<div class="card">
+<div class="card" style="width: 25rem;">
     <div class="card-body">
-        <div>Visibility</div>
+        <div class="font-weight-bold">Visibility</div>
         <div><?php get_visibility($result["visibility"]); ?></div>
     </div>
 </div>
-<div class="card">
+<div class="card" style="width: 25rem;">
     <div class="card-body">
-        <div>Created By</div>
+        <div class="font-weight-bold">Created By</div>
         <div><?php safer_echo($result["username"]); ?></div>
     </div>
 </div>
