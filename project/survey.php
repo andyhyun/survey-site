@@ -26,8 +26,8 @@ if (isset($id)) {
     }
     $survey_user_id = $result["user_id"];
     $user_id = get_user_id();
-    $visibility = get_visibility($result["visibility"]);
-    if($visibility == 0 && ($user_id != $survey_user_id)) {
+    $visibility = $result["visibility"];
+    if($visibility == 0 && $user_id != $survey_user_id) {
         flash("You don't have permission to access this page");
         die(header("Location: public_surveys.php"));
     }
