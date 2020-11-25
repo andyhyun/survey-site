@@ -1,9 +1,9 @@
-<?php require_once(__DIR__ . "/../partials/nav.php"); ?>
+<?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
 if(!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
     flash("You don't have permission to access this page");
-    die(header("Location: ../login.php"));
+    die(header("Location: login.php"));
 }
 ?>
 <?php
@@ -17,7 +17,7 @@ if (isset($_GET["id"])) {
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT Surveys.title, Surveys.description, Surveys.category, Surveys.visibility, Surveys.user_id, Users.username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE Surveys.id = :id");
+    $stmt = $db->prepare("SELECT title, description, category, visibility, user_id, username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE Surveys.id = :id");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
@@ -29,7 +29,7 @@ if (isset($id)) {
     $visibility = get_visibility($result["visibility"]);
     if($visibility == 0 && $user_id != $survey_user_id) {
         flash("You don't have permission to access this page");
-        die(header("Location: ../public_surveys.php"));
+        die(header("Location: public_surveys.php"));
     }
 }
 ?>
@@ -63,4 +63,4 @@ if (isset($id)) {
         <div><?php safer_echo($result["username"]); ?></div>
     </div>
 </div>
-<?php require(__DIR__ . "/../partials/flash.php"); ?>
+<?php require(__DIR__ . "/partials/flash.php"); ?>
