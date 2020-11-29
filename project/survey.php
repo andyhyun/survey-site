@@ -60,7 +60,7 @@ if (isset($_GET["id"])) {
             // echo "<br>";
             foreach ($results as $index => $group) {
                 foreach ($group as $details) {
-                    if($details["visibility"] == 0 && get_user_id() == $details["user_id"]) {
+                    if($details["visibility"] == 0 && get_user_id() != $details["user_id"]) {
                         flash("You don't have permission to access this page");
                         die(header("Location: public_surveys.php"));
                     }
