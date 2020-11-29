@@ -38,7 +38,7 @@ if (isset($_POST["submit"])) {
     else {
         flash("There was an error recording your answers: " . var_export($stmt->errorInfo(), true));
     }
-    die(header("Location: " . getURL("public_surveys.php")));
+    die(header("Location: public_surveys.php"));
 }
 ?>
 
@@ -82,20 +82,20 @@ if (isset($_GET["id"])) {
         }
         else {
             flash("You already took this survey");
-            die(header("Location: " . getURL("public_surveys.php")));
+            die(header("Location: public_surveys.php"));
         }
         //echo "<pre>" . var_export($questions, true) . "</pre>";
 
     }
     else {
         flash("There was a problem fetching the survey: " . var_export($stmt->errorInfo(), true));
-        die(header("Location: " . getURL("public_surveys.php")));
+        die(header("Location: public_surveys.php"));
 
     }
 }
 else {
     flash("The requested survey could not be found");
-    die(header("Location: " . getURL("public_surveys.php")));
+    die(header("Location: public_surveys.php"));
 }
 ?>
 
