@@ -47,7 +47,7 @@ if (isset($_POST["submit"])) {
 if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
-    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, a.id as AnswerId, a.answer FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
+    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, s.user_id, a.id as AnswerId, a.answer FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
     $r = $stmt->execute([":id" => get_user_id(), ":survey_id" => $sid]);
     $title = "";
     $description = "";
@@ -60,6 +60,10 @@ if (isset($_GET["id"])) {
             // echo "<br>";
             foreach ($results as $index => $group) {
                 foreach ($group as $details) {
+                    if($details["visibility"] == 0 && get_user_id() == $details["user_id"]) {
+                        flash("You don't have permission to access this page");
+                        die(header("Location: public_surveys.php"));
+                    }
                     if (empty($title)) {
                         $title = $details["SurveyTitle"];
                     }
