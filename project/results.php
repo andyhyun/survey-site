@@ -75,7 +75,7 @@ else {
                         <?php foreach ($question["answers"] as $answer): ?>
                             <?php $eleId = $index . '-' . $answer["answerId"]; ?>
                             <div name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>">
-                                <?php safer_echo($answer["answer"] . "  |  " . safer_echo($answer["answer_percentage"])); ?>
+                                <?php safer_echo($answer["answer"] . "  |  " . $answer["answer_percentage"]); ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
