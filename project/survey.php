@@ -7,64 +7,126 @@ if(!is_logged_in()) {
 }
 ?>
 <?php
-//we'll put this at the top so both php block have access to it
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
-}
-?>
-<?php
-//fetching
-$result = [];
-if (isset($id)) {
-    $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, visibility, user_id, username FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE Surveys.id = :id");
-    $r = $stmt->execute([":id" => $id]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$result) {
-        $e = $stmt->errorInfo();
-        flash($e[2]);
-    }
-    $survey_user_id = $result["user_id"];
+if (isset($_POST["submit"])) {
+    $survey_id = $_GET["id"];
     $user_id = get_user_id();
-    $visibility = $result["visibility"];
-    if($visibility == 0 && $user_id != $survey_user_id) {
-        flash("You don't have permission to access this page");
-        die(header("Location: public_surveys.php"));
+    $params = [];
+    $query = "INSERT INTO Responses (survey_id, question_id, chosen_answer_id, user_id) VALUES";//ignore sql error hint
+    $i = 0;//can't use $key here since it presents a question_id and will always be > 0, so using a temp var to count
+    foreach ($_POST as $key => $item) {
+        if (is_numeric($key)) {
+            //assuming this is question id
+            //assuming value is answer id
+            if ($i > 0) {
+                $query .= ",";
+            }
+            $query .= "(:sid, :q$i, :a$i, :uid)";
+            $params[":q$i"] = $key;
+            $params[":a$i"] = $item;
+        }
+        $i++;
     }
+    $params[":sid"] = $survey_id;
+    $params[":uid"] = $user_id;
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    $r = $stmt->execute($params);
+    if ($r) {
+        flash("Answers have been recorded");
+    }
+    else {
+        flash("There was an error recording your answers");
+    }
+    die(header("Location: results.php?id=" . $survey_id));
 }
 ?>
-<?php if (isset($result) && !empty($result)): ?>
-    <div class="card" style="width: 25rem;">
-        <div class="card-body">
-            <div class="font-weight-bold">Title</div>
-            <div><?php safer_echo($result["title"]); ?></div>
+
+
+<?php
+if (isset($_GET["id"])) {
+    $sid = $_GET["id"];
+    $db = getDB();
+    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, s.user_id, a.id as AnswerId, a.answer FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
+    $r = $stmt->execute([":id" => get_user_id(), ":survey_id" => $sid]);
+    $title = "";
+    $description = "";
+    $category = "";
+    $questions = [];
+    if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_GROUP);
+        if ($results) {
+            //echo "<pre>" . var_export($results, true) . "</pre>";
+            // echo "<br>";
+            foreach ($results as $index => $group) {
+                foreach ($group as $details) {
+                    if($details["visibility"] == 0 && get_user_id() != $details["user_id"]) {
+                        flash("You don't have permission to access this page");
+                        die(header("Location: public_surveys.php"));
+                    }
+                    if (empty($title)) {
+                        $title = $details["SurveyTitle"];
+                    }
+                    if (empty($description)) {
+                        $description = $details["description"];
+                    }
+                    if (empty($category)) {
+                        $category = $details["category"];
+                    }
+                    $qid = $details["QuestionId"];
+                    $answer = ["answerId" => $details["AnswerId"], "answer" => $details["answer"]];
+                    if (!isset($questions[$qid]["answers"])) {
+                        $questions[$qid]["question"] = $details["question"];
+                        $questions[$qid]["answers"] = [];
+                    }
+                    array_push($questions[$qid]["answers"], $answer);
+                    // echo "<br>" . $details["question"] . " " . $details["answer"] . "<br>";
+                }
+            }
+        }
+        else {
+            flash("You already took this survey");
+            die(header("Location: results.php?id=" . $sid));
+        }
+        //echo "<pre>" . var_export($questions, true) . "</pre>";
+
+    }
+    else {
+        flash("There was a problem fetching the survey");
+        die(header("Location: public_surveys.php"));
+
+    }
+}
+else {
+    flash("The requested survey could not be found");
+    die(header("Location: public_surveys.php"));
+}
+?>
+
+<div class="container-fluid">
+    <h3><?php safer_echo($title); ?></h3>
+    <p><?php safer_echo($description); ?></p>
+    <form method="POST">
+        <div class="list-group">
+            <?php foreach ($questions as $index => $question): ?>
+                <div class="list-group-item">
+                    <div><?php safer_echo($question["question"]); ?></div>
+                    <div>
+                        <div>
+                            <?php foreach ($question["answers"] as $answer): ?>
+                                <?php $eleId = $index . '-' . $answer["answerId"]; ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" autocomplete="off" name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>" value="<?php safer_echo($answer["answerId"]); ?>">
+                                    <label class="form-check-label" for="option-<?php echo $eleId; ?>">
+                                        <?php safer_echo($answer["answer"]); ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-    </div>
-    <div class="card" style="width: 25rem;">
-        <div class="card-body">
-            <div class="font-weight-bold">Description</div>
-            <div><?php safer_echo($result["description"]); ?></div>
-        </div>
-    </div>
-    <div class="card" style="width: 25rem;">
-        <div class="card-body">
-            <div class="font-weight-bold">Category</div>
-            <div><?php safer_echo($result["category"]); ?></div>
-        </div>
-    </div>
-    <div class="card" style="width: 25rem;">
-        <div class="card-body">
-            <div class="font-weight-bold">Visibility</div>
-            <div><?php get_visibility($result["visibility"]); ?></div>
-        </div>
-    </div>
-    <div class="card" style="width: 25rem;">
-        <div class="card-body">
-            <div class="font-weight-bold">Created By</div>
-            <div><?php safer_echo($result["username"]); ?></div>
-        </div>
-    </div>
-<?php else: ?>
-    <p>The survey ID could not be found</p>
-<?php endif; ?>
+        <input type="submit" name="submit" class="btn btn-success" value="Submit Response"/>
+    </form>
+</div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
