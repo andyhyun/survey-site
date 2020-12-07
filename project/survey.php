@@ -85,7 +85,7 @@ if (isset($_GET["id"])) {
         }
         else {
             flash("You already took this survey");
-            die(header("Location: public_surveys.php"));
+            die(header("Location: results.php?id=" . $sid));
         }
         //echo "<pre>" . var_export($questions, true) . "</pre>";
 
