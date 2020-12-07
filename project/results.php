@@ -61,7 +61,7 @@ if (isset($_GET["id"])) {
         }
     }
     else {
-        flash("There was a problem fetching the survey");
+        flash("There was a problem getting the results");
         die(header("Location: public_surveys.php"));
 
     }
