@@ -36,9 +36,9 @@ if (isset($_POST["submit"])) {
         flash("Answers have been recorded");
     }
     else {
-        flash("There was an error recording your answers: " . var_export($stmt->errorInfo(), true));
+        flash("There was an error recording your answers");
     }
-    die(header("Location: public_surveys.php"));
+    die(header("Location: results.php?id=" . safer_echo($survey_id)));
 }
 ?>
 
@@ -92,7 +92,7 @@ if (isset($_GET["id"])) {
 
     }
     else {
-        flash("There was a problem fetching the survey: " . var_export($stmt->errorInfo(), true));
+        flash("There was a problem fetching the survey");
         die(header("Location: public_surveys.php"));
 
     }
