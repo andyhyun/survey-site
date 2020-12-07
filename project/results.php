@@ -9,6 +9,7 @@ if(!is_logged_in()) {
 if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
+    // May need to make this query shorter
     $stmt = $db->prepare("SELECT qryone.*, qrytwo.q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, a.id as AnswerId, a.answer, COUNT(r.id) as times_chosen 
                           FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id LEFT JOIN Responses as r ON r.chosen_answer_id = a.id GROUP BY a.id) as qryone 
                           LEFT JOIN (SELECT QuestionId, SUM(times_chosen) as q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, COUNT(r.id) as times_chosen FROM Surveys as s JOIN Questions as q on s.id = q.survey_id 
@@ -64,7 +65,7 @@ else {
 }
 ?>
 <div class="container-fluid">
-    <h3><?php safer_echo("Results of " . $title); ?></h3>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo("Results of " . $title); ?></h3>
     <p><?php safer_echo($description); ?></p>
     <div class="list-group">
         <?php foreach ($questions as $index => $question): ?>
@@ -75,7 +76,7 @@ else {
                         <?php foreach ($question["answers"] as $answer): ?>
                             <?php $eleId = $index . '-' . $answer["answerId"]; ?>
                             <div name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>">
-                                <?php safer_echo($answer["answer"] . "  |  " . $answer["answer_percentage"]); ?>
+                                <?php safer_echo($answer["answer"] . "  |  " . $answer["answer_percentage"] . "%"); ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
