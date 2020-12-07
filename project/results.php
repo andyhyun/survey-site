@@ -20,6 +20,7 @@ if (isset($_GET["id"])) {
     $description = "";
     $category = "";
     $questions = [];
+    $answer_percentage = 0;
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_GROUP);
         if ($results) {
@@ -39,7 +40,13 @@ if (isset($_GET["id"])) {
                         $category = $details["category"];
                     }
                     $qid = $details["QuestionId"];
-                    $answer = ["answerId" => $details["AnswerId"], "answer" => $details["answer"], "answer_percentage" => 100 * (round(($details["times_chosen"]/$details["q_responses"]), 3))];
+                    if($details["q_responses"] == 0) {
+                        $answer_percentage = 0;
+                    }
+                    else {
+                        $answer_percentage = 100 * (round(($details["times_chosen"]/$details["q_responses"]), 3));
+                    }
+                    $answer = ["answerId" => $details["AnswerId"], "answer" => $details["answer"], "answer_percentage" => $answer_percentage];
                     if (!isset($questions[$qid]["answers"])) {
                         $questions[$qid]["question"] = $details["question"];
                         $questions[$qid]["answers"] = [];
