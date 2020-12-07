@@ -61,7 +61,7 @@ if (isset($_GET["id"])) {
         }
     }
     else {
-        flash("There was a problem fetching the survey");
+        flash("There was a problem getting the results");
         die(header("Location: public_surveys.php"));
 
     }
@@ -77,13 +77,13 @@ else {
     <div class="list-group">
         <?php foreach ($questions as $index => $question): ?>
             <div class="list-group-item">
-                <div><?php safer_echo($question["question"]); ?></div>
+                <h4><?php safer_echo($question["question"]); ?></h4>
                 <div>
                     <div>
                         <?php foreach ($question["answers"] as $answer): ?>
                             <?php $eleId = $index . '-' . $answer["answerId"]; ?>
                             <div name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>">
-                                <?php safer_echo($answer["answer"] . "  |  " . $answer["answer_percentage"] . "%"); ?>
+                                <?php safer_echo($answer["answer_percentage"] . "%  |  " . $answer["answer"]); ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
