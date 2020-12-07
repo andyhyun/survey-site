@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
     // May need to make this query shorter
-    $stmt = $db->prepare("SELECT qryone.*, qrytwo.q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, a.id as AnswerId, a.answer, COUNT(r.id) as times_chosen 
+    $stmt = $db->prepare("SELECT qryone.*, qrytwo.q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, s.user_id, a.id as AnswerId, a.answer, COUNT(r.id) as times_chosen 
                           FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id LEFT JOIN Responses as r ON r.chosen_answer_id = a.id GROUP BY a.id) as qryone 
                           LEFT JOIN (SELECT QuestionId, SUM(times_chosen) as q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, COUNT(r.id) as times_chosen FROM Surveys as s JOIN Questions as q on s.id = q.survey_id 
                           JOIN Answers as a on a.question_id = q.id LEFT JOIN Responses as r ON r.chosen_answer_id = a.id GROUP BY a.id) as qryoneclone GROUP BY QuestionId) as qrytwo ON qryone.QuestionId = qrytwo.QuestionId 
@@ -54,7 +54,7 @@ if (isset($_GET["id"])) {
         }
     }
     else {
-        flash("There was a problem fetching the survey: " . var_export($stmt->errorInfo(), true));
+        flash("There was a problem fetching the survey");
         die(header("Location: public_surveys.php"));
 
     }
