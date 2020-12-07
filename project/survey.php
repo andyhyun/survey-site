@@ -33,11 +33,12 @@ if (isset($_POST["submit"])) {
     $r = $stmt->execute($params);
     if ($r) {
         flash("Answers have been recorded");
+        die(header("Location: results.php?id=" . $survey_id));
     }
     else {
         flash("There was an error recording your answers");
     }
-    die(header("Location: results.php?id=" . $survey_id));
+    die(header("Location: public_surveys.php"));
 }
 ?>
 
