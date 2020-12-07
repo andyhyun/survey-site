@@ -8,7 +8,6 @@ if(!is_logged_in()) {
 ?>
 <?php
 if (isset($_POST["submit"])) {
-    // echo "<pre>" . var_export($_POST, true) . "</pre>";
     $survey_id = $_GET["id"];
     $user_id = get_user_id();
     $params = [];
@@ -38,7 +37,7 @@ if (isset($_POST["submit"])) {
     else {
         flash("There was an error recording your answers");
     }
-    die(header("Location: results.php?id=" . safer_echo($survey_id)));
+    die(header("Location: results.php?id=" . $survey_id));
 }
 ?>
 
