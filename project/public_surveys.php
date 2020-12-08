@@ -17,7 +17,7 @@ if(isset($_POST["category_filter"])) {
 }
 if(isset($_POST["search"])) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY created DESC LIMIT 10");
+    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY Surveys.created DESC LIMIT 10");
     $r = $stmt->execute([":tf" => "%$title_filter%", ":cf" => "%$category_filter%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -28,7 +28,7 @@ if(isset($_POST["search"])) {
 }
 else {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY created DESC LIMIT 10");
+    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY Surveys.created DESC LIMIT 10");
     $r = $stmt->execute();
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
