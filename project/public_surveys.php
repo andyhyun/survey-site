@@ -77,7 +77,7 @@ else {
                             }
                             ?>
                         </div>
-                        <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-2" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-3" align="center"><?php safer_echo($r["username"]) ?></div>
                         <div class="col-1 btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
