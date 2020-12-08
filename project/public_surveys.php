@@ -17,7 +17,7 @@ if(isset($_POST["category_filter"])) {
 }
 if(isset($_POST["search"])) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.created FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY created DESC LIMIT 10");
+    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY Surveys.created DESC LIMIT 10");
     $r = $stmt->execute([":tf" => "%$title_filter%", ":cf" => "%$category_filter%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -28,7 +28,7 @@ if(isset($_POST["search"])) {
 }
 else {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.created FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY created DESC LIMIT 10");
+    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY Surveys.created DESC LIMIT 10");
     $r = $stmt->execute();
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -56,28 +56,37 @@ else {
         <?php if($results && count($results) > 0): ?>
             <div class="list-group-item" style="background-color: #e8faff;">
                 <div class="row">
-                    <div class="col-3">Title</div>
-                    <div class="col-4">Description</div>
-                    <div class="col-2" align="center">Category</div>
+                    <div class="col-4">Title</div>
+                    <div class="col-3">Description</div>
+                    <div class="col-1" align="center">Category</div>
                     <div class="col-3" align="center">Posted By</div>
+                    <div class="col-1" align="center">Options</div>
                 </div>
             </div>
             <?php foreach($results as $r): ?>
                 <div class="list-group-item">
                     <div class="row">
-                        <div class="col-3"><?php safer_echo($r["title"]) ?></div>
-                        <div class="col-4">
+                        <div class="col-4"><?php safer_echo($r["title"]) ?></div>
+                        <div class="col-3">
                             <?php
-                            if(strlen($r["description"]) > 50) {
-                                safer_echo(substr($r["description"], 0, 50) . "...");
+                            if(strlen($r["description"]) > 40) {
+                                safer_echo(substr($r["description"], 0, 37) . "...");
                             }
                             else {
                                 safer_echo($r["description"]);
                             }
                             ?>
                         </div>
-                        <div class="col-2" align="center"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-3" align="center"><?php safer_echo($r["username"]) ?></div>
+                        <div class="col-1 btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>">Take Survey</a>
+                                <a class="dropdown-item" href="<?php echo get_url("results.php?id=" . $r["id"]); ?>">View Results</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
