@@ -29,7 +29,7 @@ else {
                     <div class="col-4">Description</div>
                     <div class="col-1" align="center">Category</div>
                     <div class="col-2" align="center">Visibility</div>
-                    <div class="col-1" align="center">Options</div>
+                    <div class="col-1" align="center"></div>
                 </div>
             </div>
             <?php foreach($results as $r): ?>
@@ -48,13 +48,9 @@ else {
                         </div>
                         <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
-                        <div class="col-1 btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>">Take Survey</a>
-                                <a class="dropdown-item" href="<?php echo get_url("results.php?id=" . $r["id"]); ?>">View Results</a>
-                            </div>
+                        <div class="col-1">
+                            <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
+                            <button type="button" class="btn btn-primary"</button>
                         </div>
                     </div>
                 </div>
