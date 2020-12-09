@@ -55,7 +55,7 @@ else {
                             <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
                             <div>
                                 <?php
-                                if($r["total"] = 1) {
+                                if($r["total"] == 1) {
                                     safer_echo("Taken 1 Time");
                                 }
                                 else {
