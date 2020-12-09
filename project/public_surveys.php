@@ -32,7 +32,10 @@ if(isset($_POST["search"])) {
 }
 else {
     $db = getDB();
-    $stmt = $db->prepare("SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 ORDER BY Surveys.created DESC LIMIT 10");
+    $stmt = $db->prepare("SELECT qry.id, qry.title, qry.description, qry.category, qry.username, COUNT(r.survey_id) AS total 
+                          FROM (SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 
+                          ORDER BY Surveys.created DESC LIMIT 10) AS qry LEFT JOIN (SELECT DISTINCT user_id, survey_id FROM Responses) AS r ON qry.id = r.survey_id 
+                          GROUP BY qry.id, qry.title, qry.description, qry.category, qry.username");
     $r = $stmt->execute();
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
