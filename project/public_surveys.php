@@ -73,7 +73,7 @@ else {
             <?php foreach($results as $r): ?>
                 <div class="list-group-item">
                     <div class="row">
-                        <div class="col-4"><a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>"><?php safer_echo($r["title"]) ?></a></div>
+                        <div class="col-4"><a href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>"><?php safer_echo($r["title"]) ?></a></div>
                         <div class="col-3">
                             <?php
                             if(strlen($r["description"]) > 40) {
