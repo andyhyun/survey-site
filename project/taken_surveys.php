@@ -52,7 +52,6 @@ else {
                         <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
                         <div class="col-1" align="center">
-                            <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
                             <div>
                                 <?php
                                 if($r["total"] == 1) {
@@ -63,6 +62,7 @@ else {
                                 }
                                 ?>
                             </div>
+                            <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
                         </div>
                     </div>
                 </div>

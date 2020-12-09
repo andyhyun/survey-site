@@ -52,14 +52,6 @@ else {
                         <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
                         <div class="col-1 btn-group" align="center">
                             <div>
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>">Take Survey</a>
-                                    <a class="dropdown-item" href="<?php echo get_url("results.php?id=" . $r["id"]); ?>">View Results</a>
-                                </div>
-                            </div>
-                            <div>
                                 <?php
                                 if($r["total"] == 1) {
                                     safer_echo("Taken 1 Time");
@@ -68,6 +60,11 @@ else {
                                     safer_echo("Taken " . $r["total"] . " Times");
                                 }
                                 ?>
+                            </div>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>">Take Survey</a>
+                                <a class="dropdown-item" href="<?php echo get_url("results.php?id=" . $r["id"]); ?>">View Results</a>
                             </div>
                         </div>
                     </div>
