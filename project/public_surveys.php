@@ -87,7 +87,9 @@ else {
                         <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-3" align="center"><?php safer_echo($r["username"]) ?></div>
                         <div class="col-1 btn-group" align="center">
-                            <div>
+                            <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
+                            <a href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Take Survey</a>
+                            <div style="padding-top: 10px;">
                                 <?php
                                 if($r["total"] == 1) {
                                     safer_echo("Taken 1 Time");
@@ -96,11 +98,6 @@ else {
                                     safer_echo("Taken " . $r["total"] . " Times");
                                 }
                                 ?>
-                            </div>
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>">Take Survey</a>
-                                <a class="dropdown-item" href="<?php echo get_url("results.php?id=" . $r["id"]); ?>">View Results</a>
                             </div>
                         </div>
                     </div>
