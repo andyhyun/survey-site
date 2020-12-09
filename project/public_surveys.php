@@ -63,7 +63,7 @@ else {
         <?php if($results && count($results) > 0): ?>
             <div class="list-group-item" style="background-color: #e8faff;">
                 <div class="row">
-                    <div class="col-4">Title</div>
+                    <div class="col-4">Title (Click to Take Survey)</div>
                     <div class="col-3">Description</div>
                     <div class="col-1" align="center">Category</div>
                     <div class="col-3" align="center">Posted By</div>
@@ -73,7 +73,7 @@ else {
             <?php foreach($results as $r): ?>
                 <div class="list-group-item">
                     <div class="row">
-                        <div class="col-4"><?php safer_echo($r["title"]) ?></div>
+                        <div class="col-4"><a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>"><?php safer_echo($r["title"]) ?></a></div>
                         <div class="col-3">
                             <?php
                             if(strlen($r["description"]) > 40) {
@@ -88,7 +88,6 @@ else {
                         <div class="col-3" align="center"><?php safer_echo($r["username"]) ?></div>
                         <div class="col-1 btn-group" align="center">
                             <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
-                            <a href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Take Survey</a>
                             <div style="padding-top: 10px;">
                                 <?php
                                 if($r["total"] == 1) {
