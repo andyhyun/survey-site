@@ -50,7 +50,6 @@ else {
                         <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
                         <div class="col-1">
                             <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
-                            <button type="button" class="btn btn-primary"</button>
                         </div>
                     </div>
                 </div>
