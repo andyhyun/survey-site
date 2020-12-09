@@ -92,7 +92,7 @@ else {
                             </div>
                             <div>
                                 <?php
-                                if($r["total"] = 1) {
+                                if($r["total"] == 1) {
                                     safer_echo("Taken 1 Time");
                                 }
                                 else {
