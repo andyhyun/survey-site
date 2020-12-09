@@ -86,7 +86,7 @@ else {
                         </div>
                         <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-3" align="center"><?php safer_echo($r["username"]) ?></div>
-                        <div class="col-1 btn-group" align="center">
+                        <div class="col-1" align="center">
                             <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
                             <div style="padding-top: 10px;">
                                 <?php
