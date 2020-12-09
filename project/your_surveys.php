@@ -9,7 +9,9 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT id, title, description, category, visibility FROM Surveys WHERE user_id = :uid ORDER BY created DESC LIMIT 10");
+$stmt = $db->prepare("SELECT qry.id, qry.title, qry.description, qry.category, qry.visibility, COUNT(r.survey_id) AS total 
+                      FROM (SELECT * FROM Surveys WHERE user_id = :uid ORDER BY created DESC LIMIT 10) AS qry LEFT JOIN (SELECT DISTINCT user_id, survey_id FROM Responses) AS r 
+                      ON qry.id = r.survey_id GROUP BY qry.id, qry.title, qry.description, qry.category, qry.visibility");
 $r = $stmt->execute([":uid" => $user_id]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -48,12 +50,22 @@ else {
                         </div>
                         <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
                         <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
-                        <div class="col-1 btn-group">
+                        <div class="col-1 btn-group" align="center">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>">Take Survey</a>
                                 <a class="dropdown-item" href="<?php echo get_url("results.php?id=" . $r["id"]); ?>">View Results</a>
+                            </div>
+                            <div>
+                                <?php
+                                if($r["total"] = 1) {
+                                    safer_echo("Taken 1 Time");
+                                }
+                                else {
+                                    safer_echo("Taken " . $r["total"] . " Times");
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
