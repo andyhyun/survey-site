@@ -9,10 +9,8 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT qry.id, qry.title, qry.description, qry.category, qry.visibility, COUNT(r.survey_id) AS total 
-                      FROM (SELECT DISTINCT s.id, s.title, s.description, s.category, s.visibility, r.created FROM Surveys s JOIN Responses r ON s.id = r.survey_id 
-                      WHERE r.user_id = :uid ORDER BY r.created DESC LIMIT 10) AS qry LEFT JOIN (SELECT DISTINCT user_id, survey_id FROM Responses) AS r ON qry.id = r.survey_id 
-                      GROUP BY qry.id, qry.title, qry.description, qry.category, qry.visibility");
+$stmt = $db->prepare("SELECT DISTINCT s.*, r.created AS r_created, (SELECT COUNT(DISTINCT user_id) FROM Responses WHERE Responses.survey_id = s.id) AS total 
+                      FROM Surveys s JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC");
 $r = $stmt->execute([":uid" => $user_id]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
