@@ -17,11 +17,8 @@ if(isset($_POST["category_filter"])) {
 }
 if(isset($_POST["search"])) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT qry.id, qry.title, qry.description, qry.category, qry.username, COUNT(r.survey_id) AS total 
-                          FROM (SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id 
-                          WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY Surveys.created DESC LIMIT 10) AS qry 
-                          LEFT JOIN (SELECT DISTINCT user_id, survey_id FROM Responses) AS r ON qry.id = r.survey_id 
-                          GROUP BY qry.id, qry.title, qry.description, qry.category, qry.username");
+    $stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT user_id) FROM Responses r WHERE r.survey_id = s.id) AS total FROM Surveys s JOIN Users u ON s.user_id = u.id 
+                          LEFT JOIN Responses r ON s.id = r.survey_id WHERE title LIKE :tf AND category LIKE :cf AND visibility = 2 ORDER BY created DESC");
     $r = $stmt->execute([":tf" => "%$title_filter%", ":cf" => "%$category_filter%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,10 +29,8 @@ if(isset($_POST["search"])) {
 }
 else {
     $db = getDB();
-    $stmt = $db->prepare("SELECT qry.id, qry.title, qry.description, qry.category, qry.username, COUNT(r.survey_id) AS total 
-                          FROM (SELECT title, description, category, username, Surveys.id FROM Surveys JOIN Users ON Surveys.user_id = Users.id WHERE visibility = 2 
-                          ORDER BY Surveys.created DESC LIMIT 10) AS qry LEFT JOIN (SELECT DISTINCT user_id, survey_id FROM Responses) AS r ON qry.id = r.survey_id 
-                          GROUP BY qry.id, qry.title, qry.description, qry.category, qry.username");
+    $stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT user_id) FROM Responses r WHERE r.survey_id = s.id) AS total FROM Surveys s JOIN Users u ON s.user_id = u.id 
+                          LEFT JOIN Responses r ON s.id = r.survey_id WHERE visibility = 2 ORDER BY created DESC");
     $r = $stmt->execute();
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
