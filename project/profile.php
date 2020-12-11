@@ -14,25 +14,6 @@ if(isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-// $db = getDB();
-// $stmt = $db->prepare("SELECT username, acct_visibility FROM Users WHERE id = :id LIMIT 1");
-// $r = $stmt->execute([":id" => $id]);
-// if($r) {
-//     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-// }
-// else {
-//     flash("This account does not exist");
-//     die(header("Location: public_surveys.php"));
-// }
-// $profile_data = [];
-// if($result["acct_visibility"] == 0 && $id != get_user_id()) {
-//     flash("That account is private");
-//     die(header("Location: public_surveys.php"));
-// }
-// else {
-//     $profile_data = $result; // $result may be used for other queries
-// }
-
 //save data if we submitted the form and if the user id in the url is the currently logged in user
 if ($id == get_user_id() && isset($_POST["saved"])) {
     $db = getDB();
@@ -181,7 +162,9 @@ if($result["acct_visibility"] == 0 && $id != get_user_id()) {
 else {
     $profile_data = $result; // $result may be used for other queries
 }
+
 ?>
+
 <div class="container-fluid">
     <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo($profile_data["username"]); ?></h3>
     <hr>
@@ -198,8 +181,8 @@ else {
             <div class="form-group">
             <label for="acct_visibility">Account Visibility</label>
                 <select class="form-control" name="acct_visibility" id="acct_visibility" required>
-                    <option value="0" <?php echo (get_acct_visibility() == "0"?'selected="selected"':'');?>>Private</option>
-                    <option value="1" <?php echo (get_acct_visibility() == "1"?'selected="selected"':'');?>>Public</option>
+                    <option value="0" <?php echo ($profile_data["acct_visibility"] == "0"?'selected="selected"':'');?>>Private</option>
+                    <option value="1" <?php echo ($profile_data["acct_visibility"] == "1"?'selected="selected"':'');?>>Public</option>
                 </select>
             </div>
             <hr>
