@@ -145,15 +145,17 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
             flash("New passwords do not match");
         }
         //fetch/select fresh data in case anything changed
-        $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
+        $stmt = $db->prepare("SELECT email, username, acct_visibility from Users WHERE id = :id LIMIT 1");
         $stmt->execute([":id" => get_user_id()]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
             $email = $result["email"];
             $username = $result["username"];
+            $acct_visibility = $result["acct_visibility"];
             //let's update our session too
             $_SESSION["user"]["email"] = $email;
             $_SESSION["user"]["username"] = $username;
+            $_SESSION["user"]["acct_visibility"] = $acct_visibility;
         }
     }
     else {
