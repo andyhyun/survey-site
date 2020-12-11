@@ -82,7 +82,21 @@ function get_visibility($n) {
             echo "Public";
             break;
         default:
-            echo "Unsupported State: " . safer_echo($n);
+            echo "Unsupported Visibility";
+            break;
+    }
+}
+
+function get_acct_visibility($n) {
+    switch($n) {
+        case 0:
+            echo "Private";
+            break;
+        case 1:
+            echo "Public";
+            break;
+        default:
+            echo "Unsupported Profile Visibility";
             break;
     }
 }
