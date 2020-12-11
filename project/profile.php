@@ -177,8 +177,8 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
             <div class="form-group">
             <label for="acct_visibility">Account Visibility</label>
                 <select class="form-control" name="acct_visibility" id="acct_visibility" required>
-                    <option value="0">Private</option>
-                    <option value="1">Public</option>
+                    <option value="0" <?php echo ($profile_data["acct_visibility"] == "0"?'selected="selected"':'');?>>Private</option>
+                    <option value="1" <?php echo ($profile_data["acct_visibility"] == "1"?'selected="selected"':'');?>>Public</option>
                 </select>
             </div>
             <hr>
