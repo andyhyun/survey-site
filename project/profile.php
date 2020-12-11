@@ -21,7 +21,8 @@ if($r) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 else {
-    flash("There was a problem fetching the results");
+    flash("This account does not exist");
+    die(header("Location: public_surveys.php"));
 }
 $profile_data = [];
 if($result["acct_visibility"] == 0 && $id != get_user_id()) {
@@ -89,9 +90,11 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
         }
     }
     if ($isValid) {
-        if (($oldEmail != $newEmail) || ($oldUsername != $newUsername)) {
-            $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
-            $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
+        $oldAcctVisibility = get_acct_visibility();
+        $newAcctVisibility = $_POST["acct_visibility"];
+        if (($oldEmail != $newEmail) || ($oldUsername != $newUsername) || ($oldAcctVisibility != $newAcctVisibility)) {
+            $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, acct_visibility = :acct_visibility where id = :id");
+            $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":acct_visibility" => $newAcctVisibility, ":id" => get_user_id()]);
             if ($r) {
                 flash("Updated profile");
             }
@@ -172,9 +175,13 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
                 <input class="form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
             </div>
             <div class="form-group">
-                <label for = "epw">Existing Password</label>
-                <input class="form-control" type="password" maxlength="60" name="existing"/>
+            <label for="acct_visibility">Account Visibility</label>
+                <select class="form-control" name="acct_visibility" id="acct_visibility" required>
+                    <option value="0">Private</option>
+                    <option value="1">Public</option>
+                </select>
             </div>
+            <hr>
             <div class="form-group">
                 <label for="pw">New Password</label>
                 <input class="form-control" type="password" maxlength="60" name="password"/>
@@ -182,6 +189,10 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
             <div class="form-group">
                 <label for="cpw">Confirm New Password</label>
                 <input class="form-control" type="password" maxlength="60" name="confirm"/>
+            </div>
+            <div class="form-group">
+                <label for = "epw">Existing Password</label>
+                <input class="form-control" type="password" maxlength="60" name="existing"/>
             </div>
             <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
         </form>
