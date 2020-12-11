@@ -14,24 +14,24 @@ if(isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-$db = getDB();
-$stmt = $db->prepare("SELECT username, acct_visibility FROM Users WHERE id = :id LIMIT 1");
-$r = $stmt->execute([":id" => $id]);
-if($r) {
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-else {
-    flash("This account does not exist");
-    die(header("Location: public_surveys.php"));
-}
-$profile_data = [];
-if($result["acct_visibility"] == 0 && $id != get_user_id()) {
-    flash("That account is private");
-    die(header("Location: public_surveys.php"));
-}
-else {
-    $profile_data = $result; // $result may be used for other queries
-}
+// $db = getDB();
+// $stmt = $db->prepare("SELECT username, acct_visibility FROM Users WHERE id = :id LIMIT 1");
+// $r = $stmt->execute([":id" => $id]);
+// if($r) {
+//     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+// }
+// else {
+//     flash("This account does not exist");
+//     die(header("Location: public_surveys.php"));
+// }
+// $profile_data = [];
+// if($result["acct_visibility"] == 0 && $id != get_user_id()) {
+//     flash("That account is private");
+//     die(header("Location: public_surveys.php"));
+// }
+// else {
+//     $profile_data = $result; // $result may be used for other queries
+// }
 
 //save data if we submitted the form and if the user id in the url is the currently logged in user
 if ($id == get_user_id() && isset($_POST["saved"])) {
@@ -161,6 +161,25 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
     else {
         //else for $isValid, though don't need to put anything here since the specific failure will output the message
     }
+}
+
+$db = getDB();
+$stmt = $db->prepare("SELECT username, acct_visibility FROM Users WHERE id = :id LIMIT 1");
+$r = $stmt->execute([":id" => $id]);
+if($r) {
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+else {
+    flash("This account does not exist");
+    die(header("Location: public_surveys.php"));
+}
+$profile_data = [];
+if($result["acct_visibility"] == 0 && $id != get_user_id()) {
+    flash("That account is private");
+    die(header("Location: public_surveys.php"));
+}
+else {
+    $profile_data = $result; // $result may be used for other queries
 }
 ?>
 <div class="container-fluid">
