@@ -49,5 +49,8 @@ require_once(__DIR__ . "/../lib/helpers.php");
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("logout.php"); ?>">Logout</a></li>
             <?php endif; ?>
         </ul>
+        <?php if(!is_logged_in()): ?>
+            <span class="navbar-text"><?php safer_echo(get_username()); ?></span>
+        <?php endif; ?>
     <nav>
 </div>
