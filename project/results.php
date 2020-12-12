@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
     // May need to make this query shorter
-    $stmt = $db->prepare("SELECT q.id AS question_id, q.question, s.*, a.id AS answer_id, a.answer, u.username, (SELECT COUNT(chosen_answer_id) FROM Responses r WHERE r.chosen_answer_id = a.id) AS times_chosen, 
+    $stmt = $db->prepare("SELECT q.id AS group_id, q.id AS question_id, q.question, s.*, a.id AS answer_id, a.answer, u.username, (SELECT COUNT(chosen_answer_id) FROM Responses r WHERE r.chosen_answer_id = a.id) AS times_chosen, 
                           (SELECT COUNT(question_id) FROM Responses r WHERE r.question_id = q.id) AS q_responses FROM Questions q LEFT JOIN Answers a ON a.question_id = q.id 
                           JOIN Surveys s ON s.id = q.survey_id JOIN Users u ON s.user_id = u.id WHERE q.survey_id = :survey_id");
     $r = $stmt->execute([":survey_id" => $sid]);
