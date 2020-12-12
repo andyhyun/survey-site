@@ -84,13 +84,19 @@ else {
     <div class="list-group">
         <?php foreach ($questions as $index => $question): ?>
             <div class="list-group-item">
-                <h4><?php safer_echo($question["question"]); ?></h4>
+                <h4 style="margin-bottom: 20px;"><?php safer_echo($question["question"]); ?></h4>
                 <div>
                     <div>
                         <?php foreach ($question["answers"] as $answer): ?>
                             <?php $eleId = $index . '-' . $answer["answerId"]; ?>
-                            <div name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>">
-                                <?php safer_echo($answer["answer_percentage"] . "%  |  " . $answer["answer"]); ?>
+                            <div name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>" style="margin-bottom: 15px;">
+                                <?php safer_echo($answer["answer"]); ?>
+                                <div class="progress" style="height: 30px;">
+                                    <div class="progress-bar" role="progressbar" style="width: <?php safer_echo((int)($answer["answer_percentage"])); ?>%;" 
+                                    aria-valuenow="<?php safer_echo((int)($answer["answer_percentage"])); ?>" aria-valuemin="0" aria-valuemax="100">
+                                        <?php safer_echo($answer["answer_percentage"] . "%"); ?>
+                                    </div>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
