@@ -12,7 +12,7 @@ if(!isset($nav_label)) {
 
 ?>
 <?php if(isset($page) && isset($total_pages) && isset($nav_label)):?>
-    <nav aria-label="<?php echo $nav_label; ?>">
+    <nav aria-label="<?php echo $nav_label; ?>" style="margin: 40px;">
         <ul class="pagination justify-content-center">
             <li class="page-item <?php echo ($page - 1) < 1?"disabled":"";?>">
                 <a class="page-link" href="?page=<?php echo $page - 1;?>" tabindex="-1">Previous</a>
