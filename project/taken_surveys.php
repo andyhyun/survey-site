@@ -9,8 +9,8 @@ if(!is_logged_in()) {
 $results = [];
 $user_id = get_user_id();
 $db = getDB();
-$stmt = $db->prepare("SELECT DISTINCT s.*, r.created AS r_created, (SELECT COUNT(DISTINCT user_id) FROM Responses WHERE Responses.survey_id = s.id) AS total 
-                      FROM Surveys s JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC");
+$stmt = $db->prepare("SELECT DISTINCT s.*, u.username, r.created AS r_created, (SELECT COUNT(DISTINCT user_id) FROM Responses WHERE Responses.survey_id = s.id) AS total 
+                      FROM Surveys s JOIN Users u ON s.user_id = u.id JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC");
 $r = $stmt->execute([":uid" => $user_id]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -27,9 +27,9 @@ else {
             <div class="list-group-item" style="background-color: #e8faff;">
                 <div class="row">
                     <div class="col-4">Title</div>
-                    <div class="col-4">Description</div>
+                    <div class="col-3">Description</div>
                     <div class="col-1" align="center">Category</div>
-                    <div class="col-2" align="center">Visibility</div>
+                    <div class="col-3" align="center">Posted By</div>
                     <div class="col-1" align="center"></div>
                 </div>
             </div>
@@ -37,10 +37,10 @@ else {
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-4"><?php safer_echo($r["title"]) ?></div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <?php
-                            if(strlen($r["description"]) > 50) {
-                                safer_echo(substr($r["description"], 0, 47) . "...");
+                            if(strlen($r["description"]) > 40) {
+                                safer_echo(substr($r["description"], 0, 37) . "...");
                             }
                             else {
                                 safer_echo($r["description"]);
@@ -48,7 +48,7 @@ else {
                             ?>
                         </div>
                         <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
-                        <div class="col-2" align="center"><?php get_visibility($r["visibility"]) ?></div>
+                        <div class="col-3" align="center"><a href="<?php echo get_url("profile.php?id=" . $r["user_id"]); ?>"><?php safer_echo($r["username"]) ?></a></div>
                         <div class="col-1" align="center">
                             <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
                             <div style="padding-top: 10px;">

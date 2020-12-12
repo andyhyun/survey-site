@@ -47,10 +47,12 @@ if (isset($_POST["submit"])) {
 if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
-    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, s.user_id, a.id as AnswerId, a.answer FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
+    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, s.user_id, a.id as AnswerId, a.answer, u.username FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id JOIN Users u ON u.id = s.user_id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
     $r = $stmt->execute([":id" => get_user_id(), ":survey_id" => $sid]);
     $title = "";
     $description = "";
+    $creator_username = "";
+    $creator_user_id = 0;
     $category = "";
     $questions = [];
     if ($r) {
@@ -69,6 +71,12 @@ if (isset($_GET["id"])) {
                     }
                     if (empty($description)) {
                         $description = $details["description"];
+                    }
+                    if (empty($creator_username)) {
+                        $creator_username = $details["username"];
+                    }
+                    if (empty($creator_user_id)) {
+                        $creator_user_id = $details["user_id"];
                     }
                     if (empty($category)) {
                         $category = $details["category"];
@@ -104,7 +112,8 @@ else {
 ?>
 
 <div class="container-fluid">
-    <h3><?php safer_echo($title); ?></h3>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo($title); ?></h3>
+    <div>by <a href="<?php echo get_url("profile.php?id=" . $creator_user_id); ?>"><?php safer_echo($creator_username); ?></a></div>
     <p><?php safer_echo($description); ?></p>
     <form method="POST">
         <div class="list-group">
