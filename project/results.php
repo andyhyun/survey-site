@@ -10,14 +10,14 @@ if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
     // May need to make this query shorter
-    $stmt = $db->prepare("SELECT qryone.*, qrytwo.q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyTitle, s.description, s.category, s.visibility, s.user_id, a.id as AnswerId, a.answer, COUNT(r.id) as times_chosen 
-                          FROM Surveys as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id LEFT JOIN Responses as r ON r.chosen_answer_id = a.id GROUP BY a.id) as qryone 
-                          LEFT JOIN (SELECT QuestionId, SUM(times_chosen) as q_responses FROM (SELECT q.id as GroupId, q.id as QuestionId, COUNT(r.id) as times_chosen FROM Surveys as s JOIN Questions as q on s.id = q.survey_id 
-                          JOIN Answers as a on a.question_id = q.id LEFT JOIN Responses as r ON r.chosen_answer_id = a.id GROUP BY a.id) as qryoneclone GROUP BY QuestionId) as qrytwo ON qryone.QuestionId = qrytwo.QuestionId 
-                          HAVING SurveyId = :survey_id");
+    $stmt = $db->prepare("SELECT q.id question_id, q.question, s.*, a.id answer_id, a.answer, u.username, (SELECT COUNT(chosen_answer_id) FROM Responses r WHERE r.chosen_answer_id = a.id) as times_chosen, 
+                          (SELECT COUNT(question_id) FROM Responses r WHERE r.question_id = q.id) as q_responses FROM Questions q LEFT JOIN Answers a ON a.question_id = q.id 
+                          JOIN Surveys s ON s.id = q.survey_id JOIN Users u ON s.user_id = u.id WHERE q.survey_id = :survey_id");
     $r = $stmt->execute([":survey_id" => $sid]);
     $title = "";
     $description = "";
+    $creator_username = "";
+    $creator_user_id = 0;
     $category = "";
     $questions = [];
     $answer_percentage = 0;
@@ -31,22 +31,28 @@ if (isset($_GET["id"])) {
                         die(header("Location: public_surveys.php"));
                     }
                     if (empty($title)) {
-                        $title = $details["SurveyTitle"];
+                        $title = $details["title"];
                     }
                     if (empty($description)) {
                         $description = $details["description"];
                     }
+                    if (empty($creator_username)) {
+                        $creator_username = $details["username"];
+                    }
+                    if (empty($creator_user_id)) {
+                        $creator_user_id = $details["user_id"];
+                    }
                     if (empty($category)) {
                         $category = $details["category"];
                     }
-                    $qid = $details["QuestionId"];
-                    if($details["q_responses"] == 0) {
-                        $answer_percentage = 0;
+                    $qid = $details["question_id"];
+                    if($details["q_responses"] == 0) { // have to make sure to not divide by zero 
+                        $answer_percentage = 0;        // when calculating percentages
                     }
                     else {
                         $answer_percentage = 100 * (round(($details["times_chosen"]/$details["q_responses"]), 3));
                     }
-                    $answer = ["answerId" => $details["AnswerId"], "answer" => $details["answer"], "answer_percentage" => $answer_percentage];
+                    $answer = ["answerId" => $details["answer_id"], "answer" => $details["answer"], "answer_percentage" => $answer_percentage];
                     if (!isset($questions[$qid]["answers"])) {
                         $questions[$qid]["question"] = $details["question"];
                         $questions[$qid]["answers"] = [];
@@ -73,6 +79,7 @@ else {
 ?>
 <div class="container-fluid">
     <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo("Results of " . $title); ?></h3>
+    <div>by <a href="<?php echo get_url("profile.php?id=" . $creator_user_id); ?>"><?php safer_echo($creator_username); ?></a></div>
     <p><?php safer_echo($description); ?></p>
     <div class="list-group">
         <?php foreach ($questions as $index => $question): ?>
