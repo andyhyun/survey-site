@@ -6,22 +6,34 @@ if(!is_logged_in()) {
 }
 ?>
 <?php
-$results = [];
 $user_id = get_user_id();
+
+$query = "SELECT COUNT(1) AS total FROM Surveys WHERE user_id = :uid";
+$params = [":uid" => $user_id];
+$per_page = 10;
+paginate($query. $params, $per_page);
+
+$results = [];
 $db = getDB();
 $stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT user_id) FROM Responses r WHERE r.survey_id = s.id) AS total FROM Surveys s JOIN Users u ON s.user_id = u.id 
-                      LEFT JOIN Responses r ON s.id = r.survey_id WHERE s.user_id = :uid ORDER BY created DESC");
-$r = $stmt->execute([":uid" => $user_id]);
+                      LEFT JOIN Responses r ON s.id = r.survey_id WHERE s.user_id = :uid ORDER BY created DESC LIMIT :offset, :count");
+// $r = $stmt->execute([":uid" => $user_id]);
+$stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+$stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
+$stmt->bindValue(":uid", get_user_id());
+$r = $stmt->execute();
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 else {
     flash("There was a problem fetching the results");
 }
+$nav_label = "Your Created Surveys";
 ?>
 
 <div class="container-fluid">
     <h3 style="margin-top: 20px;margin-bottom: 20px;">Your Latest Surveys</h3>
+    <?php include(__DIR__."/partials/pagination.php");?>
     <div class="list-group">
         <?php if($results && count($results) > 0): ?>
             <div class="list-group-item" style="background-color: #e8faff;">
@@ -73,5 +85,6 @@ else {
             </div>
         <?php endif; ?>
     </div>
+    <?php include(__DIR__."/partials/pagination.php");?>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
