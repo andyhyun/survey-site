@@ -91,8 +91,8 @@ else {
                             <?php $eleId = $index . '-' . $answer["answerId"]; ?>
                             <div name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>" style="margin-bottom: 10px;">
                                 <?php safer_echo($answer["answer"]); ?>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: <?php safer_echo((int)($answer["answer_percentage"])); ?>%;" 
+                                <div class="progress" style="height: 30px;">
+                                    <div class="progress-bar" role="progressbar" style="width: <?php safer_echo((int)($answer["answer_percentage"])); ?>%;background-color: #e8faff;" 
                                     aria-valuenow="<?php safer_echo((int)($answer["answer_percentage"])); ?>" aria-valuemin="0" aria-valuemax="100">
                                         <?php safer_echo($answer["answer_percentage"] . "%"); ?>
                                     </div>
