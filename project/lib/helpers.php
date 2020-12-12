@@ -82,9 +82,16 @@ function get_visibility($n) {
             echo "Public";
             break;
         default:
-            echo "Unsupported State: " . safer_echo($n);
+            echo "Unsupported Visibility";
             break;
     }
+}
+
+function get_acct_visibility() {
+    if (is_logged_in() && isset($_SESSION["user"]["acct_visibility"])) {
+        return $_SESSION["user"]["acct_visibility"];
+    }
+    return -1;
 }
 
 function get_url($path) {

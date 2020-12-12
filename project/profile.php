@@ -9,9 +9,14 @@ if (!is_logged_in()) {
     die(header("Location: login.php"));
 }
 
-$db = getDB();
-//save data if we submitted the form
-if (isset($_POST["saved"])) {
+$id = get_user_id();
+if(isset($_GET["id"])) {
+    $id = $_GET["id"];
+}
+
+//save data if we submitted the form and if the user id in the url is the currently logged in user
+if ($id == get_user_id() && isset($_POST["saved"])) {
+    $db = getDB();
     $isValid = true;
     //check if our email changed
     $oldEmail = get_email();
@@ -66,9 +71,11 @@ if (isset($_POST["saved"])) {
         }
     }
     if ($isValid) {
-        if (($oldEmail != $newEmail) || ($oldUsername != $newUsername)) {
-            $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
-            $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
+        $oldAcctVisibility = get_acct_visibility();
+        $newAcctVisibility = $_POST["acct_visibility"];
+        if (($oldEmail != $newEmail) || ($oldUsername != $newUsername) || ($oldAcctVisibility != $newAcctVisibility)) {
+            $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, acct_visibility = :acct_visibility where id = :id");
+            $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":acct_visibility" => $newAcctVisibility, ":id" => get_user_id()]);
             if ($r) {
                 flash("Updated profile");
             }
@@ -115,46 +122,84 @@ if (isset($_POST["saved"])) {
                 flash("Passwords do not match");
             }
         }
-//fetch/select fresh data in case anything changed
-        $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
+        else if(empty($_POST["password"]) && !empty($_POST["confirm"]) || !empty($_POST["password"]) && empty($_POST["confirm"])) {
+            flash("New passwords do not match");
+        }
+        //fetch/select fresh data in case anything changed
+        $stmt = $db->prepare("SELECT email, username, acct_visibility from Users WHERE id = :id LIMIT 1");
         $stmt->execute([":id" => get_user_id()]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
             $email = $result["email"];
             $username = $result["username"];
+            $acct_visibility = $result["acct_visibility"];
             //let's update our session too
             $_SESSION["user"]["email"] = $email;
             $_SESSION["user"]["username"] = $username;
+            $_SESSION["user"]["acct_visibility"] = $acct_visibility;
         }
     }
     else {
         //else for $isValid, though don't need to put anything here since the specific failure will output the message
     }
 }
+
+$db = getDB();
+$stmt = $db->prepare("SELECT username, acct_visibility FROM Users WHERE id = :id LIMIT 1");
+$r = $stmt->execute([":id" => $id]);
+if($r) {
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+else {
+    flash("This account does not exist");
+    die(header("Location: public_surveys.php"));
+}
+$profile_data = [];
+if($result["acct_visibility"] == 0 && $id != get_user_id()) {
+    flash("That account is private");
+    die(header("Location: public_surveys.php"));
+}
+else {
+    $profile_data = $result; // $result may be used for other queries
+}
+
 ?>
+
 <div class="container-fluid">
-    <form method="POST">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input class="form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
-        </div>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
-        </div>
-        <div class="form-group">
-            <label for = "epw">Existing Password</label>
-            <input class="form-control" type="password" maxlength="60" name="existing"/>
-        </div>
-        <div class="form-group">
-            <label for="pw">Password</label>
-            <input class="form-control" type="password" maxlength="60" name="password"/>
-        </div>
-        <div class="form-group">
-            <label for="cpw">Confirm Password</label>
-            <input class="form-control" type="password" maxlength="60" name="confirm"/>
-        </div>
-        <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
-    </form>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo($profile_data["username"]); ?></h3>
+    <hr>
+    <?php if($id == get_user_id()): ?>
+        <form method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+            </div>
+            <div class="form-group">
+            <label for="acct_visibility">Account Visibility</label>
+                <select class="form-control" name="acct_visibility" id="acct_visibility" required>
+                    <option value="0" <?php echo ($profile_data["acct_visibility"] == "0"?'selected="selected"':'');?>>Private</option>
+                    <option value="1" <?php echo ($profile_data["acct_visibility"] == "1"?'selected="selected"':'');?>>Public</option>
+                </select>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="pw">New Password</label>
+                <input class="form-control" type="password" maxlength="60" name="password"/>
+            </div>
+            <div class="form-group">
+                <label for="cpw">Confirm New Password</label>
+                <input class="form-control" type="password" maxlength="60" name="confirm"/>
+            </div>
+            <div class="form-group">
+                <label for = "epw">Existing Password</label>
+                <input class="form-control" type="password" maxlength="60" name="existing"/>
+            </div>
+            <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
+        </form>
+    <?php endif; ?>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
