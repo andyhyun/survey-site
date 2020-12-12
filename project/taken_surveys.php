@@ -8,7 +8,7 @@ if(!is_logged_in()) {
 <?php
 $user_id = get_user_id();
 
-$query = "SELECT COUNT(DISTINCT user_id, survey_id) FROM Responses WHERE user_id = :uid";
+$query = "SELECT COUNT(DISTINCT user_id, survey_id) AS total FROM Responses WHERE user_id = :uid";
 $params = [":uid" => $user_id];
 $per_page = 10;
 paginate($query, $params, $per_page);
