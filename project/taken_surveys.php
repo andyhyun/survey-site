@@ -6,12 +6,22 @@ if(!is_logged_in()) {
 }
 ?>
 <?php
-$results = [];
 $user_id = get_user_id();
+
+$query = "SELECT COUNT(DISTINCT user_id, survey_id) FROM Responses WHERE user_id = :uid";
+$params = [":uid" => $user_id];
+$per_page = 10;
+paginate($query, $params, $per_page);
+
+$results = [];
 $db = getDB();
 $stmt = $db->prepare("SELECT DISTINCT s.*, u.username, r.created AS r_created, (SELECT COUNT(DISTINCT user_id) FROM Responses WHERE Responses.survey_id = s.id) AS total 
-                      FROM Surveys s JOIN Users u ON s.user_id = u.id JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC");
-$r = $stmt->execute([":uid" => $user_id]);
+                      FROM Surveys s JOIN Users u ON s.user_id = u.id JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC LIMIT :offset, :count");
+// $r = $stmt->execute([":uid" => $user_id]);
+$stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+$stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
+$stmt->bindValue(":uid", get_user_id());
+$r = $stmt->execute();
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
