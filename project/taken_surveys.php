@@ -33,6 +33,7 @@ $nav_label = "Taken Surveys";
 
 <div class="container-fluid">
     <h3 style="margin-top: 20px;margin-bottom: 20px;">Surveys that You've Taken</h3>
+    <?php include(__DIR__."/partials/pagination.php");?>
     <div class="list-group">
         <?php if($results && count($results) > 0): ?>
             <div class="list-group-item" style="background-color: #e8faff;">
