@@ -11,7 +11,7 @@ $user_id = get_user_id();
 $query = "SELECT COUNT(1) AS total FROM Surveys WHERE user_id = :uid";
 $params = [":uid" => $user_id];
 $per_page = 10;
-paginate($query. $params, $per_page);
+paginate($query, $params, $per_page);
 
 $results = [];
 $db = getDB();
