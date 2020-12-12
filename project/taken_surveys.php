@@ -28,6 +28,7 @@ if ($r) {
 else {
     flash("There was a problem fetching the results");
 }
+$nav_label = "Taken Surveys";
 ?>
 
 <div class="container-fluid">
@@ -81,5 +82,6 @@ else {
             </div>
         <?php endif; ?>
     </div>
+    <?php include(__DIR__."/partials/pagination.php");?>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
