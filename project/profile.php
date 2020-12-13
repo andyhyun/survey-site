@@ -291,7 +291,7 @@ else {
         </form>
     <?php endif; ?>
     <hr>
-    <h3 style="margin-top: 20px;margin-bottom: 20px;">Your Latest Surveys</h3>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo($profile_data["username"] . "'s Latest Surveys"); ?></h3>
     <?php if(isset($ypage) && isset($ytotal_pages)):?>
         <nav aria-label="Your Created Surveys" style="margin: 40px;">
             <ul class="pagination justify-content-center">
@@ -354,7 +354,7 @@ else {
             <?php endforeach; ?>
         <?php else:?>
             <div class="list-group-item">
-                You don't have any surveys yet!
+                <?php safer_echo($profile_data["username"] . " doesn't have any surveys yet!"); ?>
             </div>
         <?php endif; ?>
     </div>
@@ -374,7 +374,7 @@ else {
         </nav>
     <?php endif;?>
     <hr>
-    <h3 style="margin-top: 20px;margin-bottom: 20px;">Surveys that You've Taken</h3>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo("Surveys that " . $profile_data["username"] . " Took"); ?></h3>
     <?php if(isset($tpage) && isset($ttotal_pages)):?>
         <nav aria-label="Taken Surveys" style="margin: 40px;">
             <ul class="pagination justify-content-center">
@@ -435,7 +435,7 @@ else {
             <?php endforeach; ?>
         <?php else:?>
             <div class="list-group-item">
-                You haven't taken any surveys yet!
+                <?php safer_echo($profile_data["username"] . " hasn't taken any surveys yet!"); ?>
             </div>
         <?php endif; ?>
     </div>
