@@ -18,9 +18,8 @@ else {
     flash("There was an issue fetching the results");
     die(header("Location: public_surveys.php"));
 }
-if(count($result) > 0) {
+if(count($result) > 0 && isset($result["id"])) {
     $sid = $result["id"];
-    echo $sid;
     flash("Found a random survey!");
     die(header("Location: survey.php?id=$sid"));
 }
