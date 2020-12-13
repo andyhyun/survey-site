@@ -10,7 +10,7 @@ $sid = 0;
 $result = [];
 $db = getDB();
 $stmt = $db->prepare("SELECT * FROM (SELECT * FROM Surveys WHERE id NOT IN (SELECT DISTINCT survey_id FROM Responses WHERE user_id = :uid) AND visibility = 2) untaken_surveys ORDER BY RAND() LIMIT 1");
-$r = $stmt->execute([":uid" => get_user_id]);
+$r = $stmt->execute([":uid" => get_user_id()]);
 if($r) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 }
