@@ -20,7 +20,7 @@ else {
 }
 if(count($result) > 0) {
     $sid = $result["id"];
-    flash($sid);
+    echo $sid;
     flash("Found a random survey!");
     die(header("Location: survey.php?id=$sid"));
 }
