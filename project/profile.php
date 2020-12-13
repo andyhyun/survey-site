@@ -239,8 +239,8 @@ $toffset = ($tpage - 1) * $per_page;
 
 $tresults = [];
 $db = getDB();
-$stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT user_id) FROM Responses r WHERE r.survey_id = s.id) AS total FROM Surveys s JOIN Users u ON s.user_id = u.id 
-                      LEFT JOIN Responses r ON s.id = r.survey_id WHERE s.user_id = :uid ORDER BY created DESC LIMIT :offset, :count");
+$stmt = $db->prepare("SELECT DISTINCT s.*, u.username, r.created AS r_created, (SELECT COUNT(DISTINCT user_id) FROM Responses WHERE Responses.survey_id = s.id) AS total 
+                      FROM Surveys s JOIN Users u ON s.user_id = u.id JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC LIMIT :offset, :count");
 // $r = $stmt->execute([":uid" => $user_id]);
 $stmt->bindValue(":offset", $toffset, PDO::PARAM_INT);
 $stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
