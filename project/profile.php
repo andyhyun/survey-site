@@ -198,7 +198,7 @@ $stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT us
                       LEFT JOIN Responses r ON s.id = r.survey_id WHERE s.user_id = :uid ORDER BY created DESC LIMIT :offset, :count");
 // $r = $stmt->execute([":uid" => $user_id]);
 $stmt->bindValue(":offset", $yoffset, PDO::PARAM_INT);
-$stmt->bindValue(":count", $yper_page, PDO::PARAM_INT);
+$stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
 $stmt->bindValue(":uid", $id);
 $r = $stmt->execute();
 if ($r) {
@@ -243,7 +243,7 @@ $stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT us
                       LEFT JOIN Responses r ON s.id = r.survey_id WHERE s.user_id = :uid ORDER BY created DESC LIMIT :offset, :count");
 // $r = $stmt->execute([":uid" => $user_id]);
 $stmt->bindValue(":offset", $toffset, PDO::PARAM_INT);
-$stmt->bindValue(":count", $tper_page, PDO::PARAM_INT);
+$stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
 $stmt->bindValue(":uid", $id);
 $r = $stmt->execute();
 if ($r) {
