@@ -163,6 +163,95 @@ else {
     $profile_data = $result; // $result may be used for other queries
 }
 
+$query = "SELECT COUNT(1) AS ytotal FROM Surveys WHERE user_id = :uid";
+$params = [":uid" => $id];
+$per_page = 10;
+$ypage = 1;
+
+if (isset($_GET["ypage"])) {
+    try {
+        $ypage = (int)$_GET["ypage"];
+    }
+    catch(Exception $e) {
+        $ypage = 1;
+    }
+}
+else {
+    $ypage = 1;
+}
+
+$db = getDB();
+$stmt = $db->prepare($query);
+$stmt->execute($params);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+$ytotal = 0;
+if($result) {
+    $ytotal = (int)$result["ytotal"];
+}
+
+$ytotal_pages = ceil($ytotal / $per_page);
+$yoffset = ($ypage - 1) * $per_page;
+
+$yresults = [];
+$db = getDB();
+$stmt = $db->prepare("SELECT DISTINCT s.*, u.username, (SELECT COUNT(DISTINCT user_id) FROM Responses r WHERE r.survey_id = s.id) AS total FROM Surveys s JOIN Users u ON s.user_id = u.id 
+                      LEFT JOIN Responses r ON s.id = r.survey_id WHERE s.user_id = :uid ORDER BY created DESC LIMIT :offset, :count");
+// $r = $stmt->execute([":uid" => $user_id]);
+$stmt->bindValue(":offset", $yoffset, PDO::PARAM_INT);
+$stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
+$stmt->bindValue(":uid", $id);
+$r = $stmt->execute();
+if ($r) {
+    $yresults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+else {
+    flash("There was a problem fetching the results");
+}
+
+$query = "SELECT COUNT(DISTINCT user_id, survey_id) AS ttotal FROM Responses WHERE user_id = :uid";
+$params = [":uid" => $id];
+$per_page = 10;
+$tpage = 1;
+
+if (isset($_GET["tpage"])) {
+    try {
+        $tpage = (int)$_GET["tpage"];
+    }
+    catch(Exception $e) {
+        $tpage = 1;
+    }
+}
+else {
+    $tpage = 1;
+}
+
+$db = getDB();
+$stmt = $db->prepare($query);
+$stmt->execute($params);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+$ttotal = 0;
+if($result) {
+    $ttotal = (int)$result["ttotal"];
+}
+
+$ttotal_pages = ceil($ttotal / $per_page);
+$toffset = ($tpage - 1) * $per_page;
+
+$tresults = [];
+$db = getDB();
+$stmt = $db->prepare("SELECT DISTINCT s.*, u.username, r.created AS r_created, (SELECT COUNT(DISTINCT user_id) FROM Responses WHERE Responses.survey_id = s.id) AS total 
+                      FROM Surveys s JOIN Users u ON s.user_id = u.id JOIN Responses r ON s.id = r.survey_id WHERE r.user_id = :uid ORDER BY r_created DESC LIMIT :offset, :count");
+// $r = $stmt->execute([":uid" => $user_id]);
+$stmt->bindValue(":offset", $toffset, PDO::PARAM_INT);
+$stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
+$stmt->bindValue(":uid", $id);
+$r = $stmt->execute();
+if ($r) {
+    $tresults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+else {
+    flash("There was a problem fetching the results");
+}
 ?>
 
 <div class="container-fluid">
@@ -201,5 +290,169 @@ else {
             <input class="btn btn-primary" type="submit" name="saved" value="Save Profile"/>
         </form>
     <?php endif; ?>
+    <hr>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo($profile_data["username"] . "'s Latest Surveys"); ?></h3>
+    <?php if(isset($ypage) && isset($ytotal_pages)):?>
+        <nav aria-label="Your Created Surveys" style="margin: 40px;">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($ypage - 1) < 1?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage - 1;?>&tpage=<?php echo $tpage; ?>" tabindex="-1">Previous</a>
+                </li>
+                <?php for($i = 0; $i < $ytotal_pages; $i++):?>
+                    <li class="page-item <?php echo ($ypage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo ($i+1);?>&tpage=<?php echo $tpage; ?>"><?php echo ($i + 1);?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo ($ypage) >= $ytotal_pages?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage + 1;?>&tpage=<?php echo $tpage; ?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    <?php endif;?>
+    <div class="list-group">
+        <?php if($yresults && count($yresults) > 0): ?>
+            <div class="list-group-item" style="background-color: #e8faff;">
+                <div class="row">
+                    <div class="col-3">Title (Click to Take Survey)</div>
+                    <div class="col-3">Description</div>
+                    <div class="col-1" align="center">Category</div>
+                    <div class="col-1" align="center">Visibility</div>
+                    <div class="col-3" align="center">Posted By</div>
+                    <div class="col-1" align="center">Options</div>
+                </div>
+            </div>
+            <?php foreach($yresults as $r): ?>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-3"><a href="<?php echo get_url("survey.php?id=" . $r["id"]); ?>"><?php safer_echo($r["title"]) ?></a></div>
+                        <div class="col-3">
+                            <?php
+                            if(strlen($r["description"]) > 40) {
+                                safer_echo(substr($r["description"], 0, 37) . "...");
+                            }
+                            else {
+                                safer_echo($r["description"]);
+                            }
+                            ?>
+                        </div>
+                        <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-1" align="center"><?php get_visibility($r["visibility"]) ?></div>
+                        <div class="col-3" align="center"><a href="<?php echo get_url("profile.php?id=" . $r["user_id"]); ?>"><?php safer_echo($r["username"]) ?></a></div>
+                        <div class="col-1" align="center">
+                            <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
+                            <div style="padding-top: 10px;">
+                                <?php
+                                if($r["total"] == 1) {
+                                    safer_echo("Taken 1 Time");
+                                }
+                                else {
+                                    safer_echo("Taken " . $r["total"] . " Times");
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else:?>
+            <div class="list-group-item">
+                <?php safer_echo($profile_data["username"] . " doesn't have any surveys yet!"); ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php if(isset($ypage) && isset($ytotal_pages)):?>
+        <nav aria-label="Your Created Surveys" style="margin: 40px;">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($ypage - 1) < 1?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage - 1;?>&tpage=<?php echo $tpage; ?>" tabindex="-1">Previous</a>
+                </li>
+                <?php for($i = 0; $i < $ytotal_pages; $i++):?>
+                    <li class="page-item <?php echo ($ypage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo ($i+1);?>&tpage=<?php echo $tpage; ?>"><?php echo ($i + 1);?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo ($ypage) >= $ytotal_pages?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage + 1;?>&tpage=<?php echo $tpage; ?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    <?php endif;?>
+    <hr>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;"><?php safer_echo("Surveys that " . $profile_data["username"] . " Took"); ?></h3>
+    <?php if(isset($tpage) && isset($ttotal_pages)):?>
+        <nav aria-label="Taken Surveys" style="margin: 40px;">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($tpage - 1) < 1?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage - 1;?>&ypage=<?php echo $ypage; ?>" tabindex="-1">Previous</a>
+                </li>
+                <?php for($i = 0; $i < $ttotal_pages; $i++):?>
+                    <li class="page-item <?php echo ($tpage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo ($i+1);?>&ypage=<?php echo $ypage; ?>"><?php echo ($i + 1);?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo ($tpage) >= $ttotal_pages?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage + 1;?>&ypage=<?php echo $ypage; ?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    <?php endif;?>
+    <div class="list-group">
+        <?php if($tresults && count($tresults) > 0): ?>
+            <div class="list-group-item" style="background-color: #e8faff;">
+                <div class="row">
+                    <div class="col-4">Title</div>
+                    <div class="col-3">Description</div>
+                    <div class="col-1" align="center">Category</div>
+                    <div class="col-3" align="center">Posted By</div>
+                    <div class="col-1" align="center"></div>
+                </div>
+            </div>
+            <?php foreach($tresults as $r): ?>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-4"><?php safer_echo($r["title"]) ?></div>
+                        <div class="col-3">
+                            <?php
+                            if(strlen($r["description"]) > 40) {
+                                safer_echo(substr($r["description"], 0, 37) . "...");
+                            }
+                            else {
+                                safer_echo($r["description"]);
+                            }
+                            ?>
+                        </div>
+                        <div class="col-1" align="center"><?php safer_echo($r["category"]) ?></div>
+                        <div class="col-3" align="center"><a href="<?php echo get_url("profile.php?id=" . $r["user_id"]); ?>"><?php safer_echo($r["username"]) ?></a></div>
+                        <div class="col-1" align="center">
+                            <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
+                            <div style="padding-top: 10px;">
+                                <?php
+                                if($r["total"] == 1) {
+                                    safer_echo("Taken 1 Time");
+                                }
+                                else {
+                                    safer_echo("Taken " . $r["total"] . " Times");
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else:?>
+            <div class="list-group-item">
+                <?php safer_echo($profile_data["username"] . " hasn't taken any surveys yet!"); ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php if(isset($tpage) && isset($ttotal_pages)):?>
+        <nav aria-label="Taken Surveys" style="margin: 40px;">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($tpage - 1) < 1?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage - 1;?>&ypage=<?php echo $ypage; ?>" tabindex="-1">Previous</a>
+                </li>
+                <?php for($i = 0; $i < $ttotal_pages; $i++):?>
+                    <li class="page-item <?php echo ($tpage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo ($i+1);?>&ypage=<?php echo $ypage; ?>"><?php echo ($i + 1);?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo ($tpage) >= $ttotal_pages?"disabled":"";?>">
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage + 1;?>&ypage=<?php echo $ypage; ?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    <?php endif;?>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
