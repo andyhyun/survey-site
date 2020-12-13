@@ -296,13 +296,13 @@ else {
         <nav aria-label="Your Created Surveys" style="margin: 40px;">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo ($ypage - 1) < 1?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?ypage=<?php echo $ypage - 1;?>tpage=<?php echo $tpage; ?>" tabindex="-1">Previous</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage - 1;?>&tpage=<?php echo $tpage; ?>" tabindex="-1">Previous</a>
                 </li>
                 <?php for($i = 0; $i < $ytotal_pages; $i++):?>
-                    <li class="page-item <?php echo ($ypage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?ypage=<?php echo ($i+1);?>?tpage=<?php echo $tpage; ?>"><?php echo ($i + 1);?></a></li>
+                    <li class="page-item <?php echo ($ypage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo ($i+1);?>&tpage=<?php echo $tpage; ?>"><?php echo ($i + 1);?></a></li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo ($ypage) >= $ytotal_pages?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?ypage=<?php echo $ypage + 1;?>?tpage=<?php echo $tpage; ?>">Next</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage + 1;?>&tpage=<?php echo $tpage; ?>">Next</a>
                 </li>
             </ul>
         </nav>
@@ -362,13 +362,13 @@ else {
         <nav aria-label="Your Created Surveys" style="margin: 40px;">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo ($ypage - 1) < 1?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?ypage=<?php echo $ypage - 1;?>tpage=<?php echo $tpage; ?>" tabindex="-1">Previous</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage - 1;?>&tpage=<?php echo $tpage; ?>" tabindex="-1">Previous</a>
                 </li>
                 <?php for($i = 0; $i < $ytotal_pages; $i++):?>
-                    <li class="page-item <?php echo ($ypage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?ypage=<?php echo ($i+1);?>?tpage=<?php echo $tpage; ?>"><?php echo ($i + 1);?></a></li>
+                    <li class="page-item <?php echo ($ypage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo ($i+1);?>&tpage=<?php echo $tpage; ?>"><?php echo ($i + 1);?></a></li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo ($ypage) >= $ytotal_pages?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?ypage=<?php echo $ypage + 1;?>?tpage=<?php echo $tpage; ?>">Next</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&ypage=<?php echo $ypage + 1;?>&tpage=<?php echo $tpage; ?>">Next</a>
                 </li>
             </ul>
         </nav>
@@ -379,13 +379,13 @@ else {
         <nav aria-label="Taken Surveys" style="margin: 40px;">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo ($tpage - 1) < 1?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?tpage=<?php echo $tpage - 1;?>ypage=<?php echo $ypage; ?>" tabindex="-1">Previous</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage - 1;?>&ypage=<?php echo $ypage; ?>" tabindex="-1">Previous</a>
                 </li>
                 <?php for($i = 0; $i < $ttotal_pages; $i++):?>
-                    <li class="page-item <?php echo ($tpage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?tpage=<?php echo ($i+1);?>?ypage=<?php echo $ypage; ?>"><?php echo ($i + 1);?></a></li>
+                    <li class="page-item <?php echo ($tpage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo ($i+1);?>&ypage=<?php echo $ypage; ?>"><?php echo ($i + 1);?></a></li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo ($tpage) >= $ttotal_pages?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?tpage=<?php echo $tpage + 1;?>?ypage=<?php echo $ypage; ?>">Next</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage + 1;?>&ypage=<?php echo $ypage; ?>">Next</a>
                 </li>
             </ul>
         </nav>
@@ -443,13 +443,13 @@ else {
         <nav aria-label="Taken Surveys" style="margin: 40px;">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo ($tpage - 1) < 1?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?tpage=<?php echo $tpage - 1;?>ypage=<?php echo $ypage; ?>" tabindex="-1">Previous</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage - 1;?>&ypage=<?php echo $ypage; ?>" tabindex="-1">Previous</a>
                 </li>
                 <?php for($i = 0; $i < $ttotal_pages; $i++):?>
-                    <li class="page-item <?php echo ($tpage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?tpage=<?php echo ($i+1);?>?ypage=<?php echo $ypage; ?>"><?php echo ($i + 1);?></a></li>
+                    <li class="page-item <?php echo ($tpage - 1) == $i?"active":"";?>"><a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo ($i+1);?>&ypage=<?php echo $ypage; ?>"><?php echo ($i + 1);?></a></li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo ($tpage) >= $ttotal_pages?"disabled":"";?>">
-                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>?tpage=<?php echo $tpage + 1;?>?ypage=<?php echo $ypage; ?>">Next</a>
+                    <a class="page-link" href="<?php echo get_url("profile.php"); ?>?id=<?php echo $id; ?>&tpage=<?php echo $tpage + 1;?>&ypage=<?php echo $ypage; ?>">Next</a>
                 </li>
             </ul>
         </nav>
