@@ -119,21 +119,21 @@ function save_survey($survey) {
                 $r = $stmt->execute($params);
                 if (!$r) {
                     $hadError = true;
-                    flash("Error creating answers: " . var_export($stmt->errorInfo(), true));
+                    flash("Error creating answers");
                 }
             }
             else {
                 $hadError = true;
-                flash("Error creating questions: " . var_export($stmt->errorInfo(), true));
+                flash("Error creating questions");
             }
         }
     }
     else {
         $hadError = true;
-        flash("Error creating survey: " . var_export($stmt->errorInfo(), true),);
+        flash("Error creating survey");
     }
     if (!$hadError) {
-        flash("Successfully created Survey: " . $survey["title"],);
+        flash("Successfully created Survey: " . $survey["title"]);
         //redirect to prevent duplicate form submission
         die(header("Location: create_survey.php"));
     }
