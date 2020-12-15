@@ -141,7 +141,7 @@ function save_survey($survey) {
 
 ?>
 <div class="container-fluid">
-    <h3>Create Survey</h3>
+    <h3 style="margin-top: 20px;margin-bottom: 20px;">Create Survey</h3>
     <form method="POST">
         <div class="form-group">
             <label for="">Title</label>
