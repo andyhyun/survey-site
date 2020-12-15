@@ -65,6 +65,9 @@ $nav_label = "Your Created Surveys";
                         <div class="col-3" align="center"><a href="<?php echo get_url("profile.php?id=" . $r["user_id"]); ?>"><?php safer_echo($r["username"]) ?></a></div>
                         <div class="col-1" align="center">
                             <a href="<?php echo get_url("results.php?id=" . $r["id"]); ?>" class="btn btn-primary" role="button">Results</a>
+                            <?php if(has_role("Admin")): ?>
+                                <a href="<?php echo get_url("edit_survey.php?id=" . $r["id"]); ?>" class="btn btn-info" role="button" style="margin-top: 5px;">Edit</a>
+                            <?php endif; ?>
                             <div style="padding-top: 10px;">
                                 <?php
                                 if($r["total"] == 1) {
