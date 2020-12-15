@@ -76,7 +76,9 @@ else {
             <option value="2" <?php echo ($result["visibility"] == "2"?'selected="selected"':'');?>>Public</option>
         </select>
     </div>
-    <input type="submit" name="saved" value="Update Survey"/>
+    <div class="form-group">
+        <input type="submit" style="margin-top: 30px;" name="saved" class="btn btn-primary" value="Update Survey"/>
+    </div>
 </form>
 
 <?php require(__DIR__ . "/partials/flash.php"); ?>
