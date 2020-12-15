@@ -161,6 +161,9 @@ function save_survey($survey) {
                 <option value="0">Draft</option>
                 <option value="1">Private</option>
                 <option value="2">Public</option>
+                <?php if(has_role("Admin")): ?>
+                    <option value="3">Disabled</option>
+                <?php endif; ?>
             </select>
         </div>
 
