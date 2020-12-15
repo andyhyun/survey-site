@@ -47,7 +47,13 @@ if(isset($id)) {
     $db = getDB();
     $stmt = $db->prepare("SELECT * FROM Surveys where id = :id");
     $r = $stmt->execute([":id"=>$id]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($r) {
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    else {
+        flash("The requested survey could not be found");
+        die(header("Location: public_surveys.php"));
+    }
 }
 else {
     flash("The requested survey could not be found");
