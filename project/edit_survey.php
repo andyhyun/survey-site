@@ -64,7 +64,7 @@ else {
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" type="text" id="description" name="description" value="<?php echo $result["description"];?>"></textarea>
+            <textarea class="form-control" type="text" id="description" name="description"><?php echo $result["description"];?></textarea>
         </div>
         <div class="form-group">
             <label for="category">Category</label>
