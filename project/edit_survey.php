@@ -49,6 +49,10 @@ if(isset($id)) {
     $r = $stmt->execute([":id"=>$id]);
     if($r) {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!isset($result)) {
+            flash("The requested survey could not be found");
+            die(header("Location: public_surveys.php"));
+        }
     }
     else {
         flash("The requested survey could not be found");
