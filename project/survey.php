@@ -140,7 +140,7 @@ else {
                 </div>
             <?php endforeach; ?>
         </div>
-        <input type="submit" name="submit" class="btn btn-success" value="Submit Response"/>
+        <input type="submit" name="submit" class="btn btn-success" value="Submit Response" style="margin-top: 20px;"/>
     </form>
 </div>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
