@@ -20,7 +20,7 @@ if(isset($_POST["saved"])) {
     $visibility = $_POST["visibility"];
     $db = getDB();
     if(isset($id)) {
-        $stmt->prepare("UPDATE Surveys SET title=:title, description=:description, category=:category, visibility=:visibility WHERE id=:id");
+        $stmt = $db->prepare("UPDATE Surveys SET title=:title, description=:description, category=:category, visibility=:visibility WHERE id=:id");
         $r = $stmt->execute([
             ":title" => $title,
             ":description" => $description,
