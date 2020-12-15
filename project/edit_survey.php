@@ -79,4 +79,4 @@ else {
     <input type="submit" name="saved" value="Update Survey"/>
 </form>
 
-<?php require(__DIR__ . "/../partials/flash.php"); ?>
+<?php require(__DIR__ . "/partials/flash.php"); ?>
