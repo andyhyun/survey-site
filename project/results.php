@@ -30,6 +30,10 @@ if (isset($_GET["id"])) {
                         flash("You don't have permission to access this page");
                         die(header("Location: public_surveys.php"));
                     }
+                    if($details["visibility"] == 3 && !has_role("Admin")) {
+                        flash("You don't have permission to access this page");
+                        die(header("Location: public_surveys.php"));
+                    }
                     if (empty($title)) {
                         $title = $details["title"];
                     }
