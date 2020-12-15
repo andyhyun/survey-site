@@ -48,6 +48,7 @@ if(isset($id)) {
     $stmt = $db->prepare("SELECT * FROM Survey where id = :id");
     $r = $stmt->execute([":id"=>$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo $result["title"];
 }
 else {
     flash("The requested survey could not be found");
