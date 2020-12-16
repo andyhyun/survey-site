@@ -1,3 +1,4 @@
+--Assigns roles to certain users
 CREATE TABLE IF NOT EXISTS  `UserRoles`
 (
     `id`         int auto_increment not null,
