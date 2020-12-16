@@ -23,7 +23,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <ul class = "navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("home.php"); ?>">Home</a></li>
-            <?php if (!is_logged_in()): ?>
+            <?php if (!is_logged_in()): ?> <!-- if the user is not logged in, show these options -->
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("login.php"); ?>">Login</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("register.php"); ?>">Register</a></li>
             <?php endif; ?>
@@ -40,7 +40,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
                     </div>
                 </li>
             <?php endif; ?>
-            <?php if (is_logged_in()): ?>
+            <?php if (is_logged_in()): ?> <!-- If the user is logged in, show these options -->
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("create_survey.php"); ?>">Create Survey</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("your_surveys.php"); ?>">Your Surveys</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="<?php echo get_url("taken_surveys.php"); ?>">Surveys You've Taken</a></li>
