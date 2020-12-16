@@ -1,4 +1,5 @@
 <?php
+// comment for pr
 session_start();
 // remove all session variables
 session_unset();
@@ -10,4 +11,5 @@ session_destroy();
 
 flash("You have been logged out");
 die(header("Location: login.php"));
+// comment for pr
 ?>
