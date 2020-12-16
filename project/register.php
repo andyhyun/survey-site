@@ -1,6 +1,7 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
 <?php
+// comment for pr
 if (isset($_POST["register"])) {
     $email = null;
     $password = null;
@@ -21,7 +22,6 @@ if (isset($_POST["register"])) {
     $isValid = true;
     //check if passwords match on the server side
     if ($password == $confirm) {
-        // echo "Passwords match <br>";
         // We don't have to show anything here
     }
     else {
@@ -34,6 +34,7 @@ if (isset($_POST["register"])) {
         flash("Username cannot be an email");
         $isValid = false;
     }
+    // if none of these variables are set, then invalid data
     if (!isset($email) || !isset($password) || !isset($confirm)) {
         $isValid = false;
     }
@@ -48,8 +49,6 @@ if (isset($_POST["register"])) {
             //here's the data map for the parameter to data
             $params = array(":email" => $email, ":username" => $username, ":password" => $hash);
             $r = $stmt->execute($params);
-            //let's just see what's returned
-            //echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
             if ($e[0] == "00000") {
                 flash("You successfully registered, please login");
@@ -75,6 +74,7 @@ if (!isset($email)) {
 if (!isset($username)) {
     $username = "";
 }
+// comment for pr
 ?>
 <div class="container-fluid">
     <form method="POST">
