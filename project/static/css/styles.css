@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+/* Basic style implemented back in Milestone 1 */
+
 body {
     font-family: Roboto, Segoe UI, Verdana, Geneva, Tahoma, sans-serif;
 }
