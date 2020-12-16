@@ -129,7 +129,7 @@ else {
                             <?php foreach ($question["answers"] as $answer): ?>
                                 <?php $eleId = $index . '-' . $answer["answerId"]; ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" autocomplete="off" name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>" value="<?php safer_echo($answer["answerId"]); ?>">
+                                    <input required class="form-check-input" type="radio" autocomplete="off" name="<?php safer_echo($index); ?>" id="option-<?php echo $eleId; ?>" value="<?php safer_echo($answer["answerId"]); ?>">
                                     <label class="form-check-label" for="option-<?php echo $eleId; ?>">
                                         <?php safer_echo($answer["answer"]); ?>
                                     </label>
