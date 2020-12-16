@@ -1,5 +1,5 @@
 <!--
-Old CSS that might be used again later
+CSS that was used in Milestone 1
 <link rel="stylesheet" href = "static/css/styles.css">
 -->
 <?php
