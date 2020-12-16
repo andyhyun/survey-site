@@ -1,5 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
+// comment for PR
 //Note: we have this up here, so our update happens before our get/fetch
 //that way we'll fetch the updated data and have it correctly reflect on the form below
 //As an exercise swap these two and see how things change
@@ -74,6 +75,7 @@ if ($id == get_user_id() && isset($_POST["saved"])) {
     if ($isValid) {
         $oldAcctVisibility = get_acct_visibility();
         $newAcctVisibility = $_POST["acct_visibility"];
+        // if any of our data is different from what it originally was, then udpate it
         if (($oldEmail != $newEmail) || ($oldUsername != $newUsername) || ($oldAcctVisibility != $newAcctVisibility)) {
             $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, acct_visibility = :acct_visibility where id = :id");
             $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":acct_visibility" => $newAcctVisibility, ":id" => get_user_id()]);
