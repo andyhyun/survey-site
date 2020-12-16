@@ -138,29 +138,40 @@ function save_survey($survey) {
         die(header("Location: create_survey.php"));
     }
 }
-
+if (!isset($title)) {
+    $title = "";
+}
+if (!isset($description)) {
+    $description = "";
+}
+if (!isset($category)) {
+    $category = "";
+}
+if (!isset($visibility)) {
+    $visibility = 0;
+}
 ?>
 <div class="container-fluid">
     <h3 style="margin-top: 20px;margin-bottom: 20px;">Create Survey</h3>
     <form method="POST">
         <div class="form-group">
             <label for="">Title</label>
-            <input class="form-control" type="text" id="title" name="title" required maxlength="45"/>
+            <input class="form-control" type="text" id="title" name="title" required maxlength="45" value="<?php safer_echo($title); ?>"/>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" type="text" id="description" name="description"></textarea>
+            <textarea class="form-control" type="text" id="description" name="description"><?php safer_echo($description); ?></textarea>
         </div>
         <div class="form-group">
             <label for="category">Category</label>
-            <input class="form-control" type="text" id="category" name="category" maxlength="15"/>
+            <input class="form-control" type="text" id="category" name="category" maxlength="15" value="<?php safer_echo($category); ?>"/>
         </div>
         <div class="form-group">
             <label for="visibility">Visibility</label>
-            <select class="form-control" name="visibility" id="visibility" required>
-                <option value="0">Draft</option>
-                <option value="1">Private</option>
-                <option value="2">Public</option>
+            <select class="form-control" name="visibility" id="visibility" required value="<?php safer_echo($visibility); ?>">
+                <option value="0" <?php echo ($visibility == "0"?'selected="selected"':'');?>>Draft</option>
+                <option value="1" <?php echo ($visibility == "1"?'selected="selected"':'');?>>Private</option>
+                <option value="2" <?php echo ($visibility == "2"?'selected="selected"':'');?>>Public</option>
                 <?php if(has_role("Admin")): ?>
                     <option value="3">Disabled</option>
                 <?php endif; ?>
