@@ -13,10 +13,13 @@
     </form>
 </div>
 <?php
+// comment for pr
 if (isset($_POST["login"])) {
     $email = null;
     $username = null;
     $password = null;
+    //getting info from text field that could be email or username
+    // figure out if it's valid and which it is
     if (isset($_POST["emailorusername"])) {
         $email = $_POST["emailorusername"];
         $username = $_POST["emailorusername"];
@@ -31,11 +34,12 @@ if (isset($_POST["login"])) {
         flash("Email, username or password is missing");
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // method of email validation comes from https://stackoverflow.com/questions/12026842/how-to-validate-an-email-address-in-php
-        $usingEmail = false;
+        $usingEmail = false; // this means that a username was entered
     }
     if ($isValid) {
         $db = getDB();
         if (isset($db)) {
+            // query run depends on if the user entered a username or email
             if($usingEmail) {
                 $stmt = $db->prepare("SELECT id, email, username, password, acct_visibility from Users WHERE email = :email LIMIT 1");
                 $params = array(":email" => $email);
@@ -86,5 +90,6 @@ SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id wher
         flash("There was a validation issue");
     }
 }
+// comment for pr
 ?>
 <?php require(__DIR__ . "/partials/flash.php"); ?>
