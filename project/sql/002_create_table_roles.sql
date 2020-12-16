@@ -1,3 +1,4 @@
+--The Roles table contains all of the different roles a user can have
 CREATE TABLE IF NOT EXISTS  `Roles`
 (
     `id`         int auto_increment not null,
