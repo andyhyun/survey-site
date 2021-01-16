@@ -1,4 +1,3 @@
-# IT202
-## Andy Kim
+# Survey Website
 
-Edited via github.com
+A simple website for creating and taking surveys
